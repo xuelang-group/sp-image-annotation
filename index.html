@@ -1,12 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>suanpan image annotation</title>
+  <style type="text/css">
+    .mr {
+      margin-right: 6px;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid #cccccc;
+    }
+
+    .header .btn {
+      padding: 6px 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .header #pencil {
+      padding: 0 7px;
+      border-right: 1px solid #8080804d;
+    }
+
+    .header #acitonButton {
+      padding: 0 15px;
+    }
+
+    .canvas-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+    }
+
+    .canvas-container .image {
+      width: 100%;
+    }
+
+    .canvas-container .canvas {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .result-container {
+      position: fixed;
+      top: 20px;
+      right: 16px;
+      width: 400px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: 1;
+      border-radius: 6px;
+    }
+
+    .result-container .result-content {
+      display: none;
+      padding: 6px;
+      background-color: #ffffff;
+    }
+  </style>
 </head>
-<body>
-    
+
+<body onload="initKonva()">
+  <div class="header">
+    <div id="pencil"></div>
+    <div id="acitonButton">
+      <button onclick="save()" class="btn">保存</button>
+    </div>
+  </div>
+  <div class="canvas-container">
+    <img ref="img" src="./demo/demo.jpg" class="image" />
+    <div id="cutimage" class="canvas"></div>
+  </div>
+  <div class="result-container">
+    <div class="result-header">
+      <div class="title">图形数据</div>
+    </div>
+    <div id="result" class="result-content"></div>
+  </div>
+
+  <script>
+    var shapeType = 'RECTANGLE';
+    var SHAPES_SUPPORTED = {};
+    var shapes = [];
+
+    function save() {
+      var $result = document.getElementById('result');
+      var viewports = []
+
+      shapes.map(function (shape) {
+        viewports.push({ type: shape.type, coordinate: shape.getCoordinate() })
+      })
+
+      $result.innerHTML = JSON.stringify(viewports);
+      $result.style.display = 'block';
+    }
+
+    function getOperationButtons() {
+      var $pencil = document.getElementById('pencil');
+
+      if (window.SpImageAnnotation) {
+        Object.keys(SpImageAnnotation).map(function (shapeKey) {
+          var shape = SpImageAnnotation[shapeKey];
+          SHAPES_SUPPORTED[shape.type] = shape;
+
+          var shapeBtn = document.createElement('button');
+          shapeBtn.setAttribute('id', shape.shapeName);
+          shapeBtn.setAttribute('class', 'btn mr');
+
+          shapeBtn.innerHTML = shape.text;
+          shapeBtn.addEventListener('click', function () {
+            shapeType = shape.type;
+          });
+
+          $pencil.appendChild(shapeBtn);
+        });
+      }
+    }
+
+    function initStage() {
+      var containerId = 'cutimage';
+      var container = document.getElementById(containerId);
+      if (!container) {
+        return null
+      }
+      var stage = new Konva.Stage({
+        container: containerId,
+        width: container.clientWidth,
+        height: container.clientHeight
+      })
+
+      var layer = new Konva.Layer()
+      stage.add(layer)
+
+      var isPaint = false;
+      var lastShape, lastX, lastY;
+
+      stage.on('mousedown touchstart', function () {
+        isPaint = true;
+        var pos = stage.getPointerPosition();
+        lastX = pos.x;
+        lastY = pos.y;
+        lastShape = new SHAPES_SUPPORTED[shapeType]({ x: lastX, y: lastY, width: 1, height: 1 });
+        shapes.push(lastShape);
+        layer.add(lastShape.getTarget());
+      })
+
+      stage.on('mouseup touchend', function () {
+        isPaint = false;
+      })
+
+      // and core function - drawing
+      stage.on('mousemove touchmove', function () {
+        if (!isPaint) {
+          return;
+        }
+
+        var pos = stage.getPointerPosition();
+        var width = Math.max(0, pos.x - lastX);
+        var height = Math.max(0, pos.y - lastY);
+
+        lastShape.setWidthHeight(width, height);
+        layer.batchDraw();
+      })
+
+      return stage
+    }
+
+    function initKonva() {
+      getOperationButtons();
+
+      initStage();
+    }
+  </script>
 </body>
+
 </html>

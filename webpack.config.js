@@ -19,14 +19,8 @@ module.exports = (env = {}) => {
 
   if (isProd) {
     plugins.push(new webpack.BannerPlugin(`${name} - ${pkg.version}`))
-  }
-  else {
-    const index = 'index.html';
-    const indexDev = '_' + index;
-    plugins.push(new HtmlWebpackPlugin({
-      template: fs.existsSync(indexDev) ? indexDev : index,
-      inject: false,
-    }));
+  } else {
+    plugins.push(new HtmlWebpackPlugin({ template: 'index.html' }));
   }
 
   return {
@@ -69,7 +63,7 @@ module.exports = (env = {}) => {
       ],
     },
     resolve: {
-      extensions: [ '.ts', '.js' ],
+      extensions: ['.ts', '.js'],
     },
     externals: { 'grapesjs': 'grapesjs' },
     plugins: plugins,

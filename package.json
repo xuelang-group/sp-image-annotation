@@ -1,15 +1,14 @@
 {
   "name": "sp-image-annotation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A tool for image annotation",
   "main": "index.js",
   "scripts": {
     "test": "npm run test",
     "lint": "eslint src",
     "v:patch": "npm version --no-git-tag-version patch",
-    "dev": "webpack",
     "build": "npm run v:patch && webpack --env.production",
-    "start": "webpack-dev-server --open --progress --colors"
+    "dev": "webpack-dev-server --open --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -37,7 +36,8 @@
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.4",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
