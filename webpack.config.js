@@ -63,7 +63,7 @@ module.exports = (env = {}) => {
       ],
     },
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js']
     },
     externals: { 'grapesjs': 'grapesjs' },
     plugins: plugins,

@@ -1,3 +1,5 @@
+import Konva from 'konva/types/index-types'
+
 declare namespace SPImageAnnotation {
     export const Rect: typeof import('./Components/Rect').Rect;
     export type Rect = import('./Components/Rect').Rect;
@@ -7,6 +9,13 @@ declare namespace SPImageAnnotation {
 
     export const ConcentricCircle: typeof import('./Components/ConcentricCircle').ConcentricCircle;
     export type ConcentricCircle = import('./Components/ConcentricCircle').ConcentricCircle;
+
+    export const Layer: typeof import('./Layer').Layer;
+    export type Layer = import('./Layer').Layer;
+
+    export const Stage: typeof import('./Stage').Stage;
+    export type StageConfig = import('./Stage').StageConfig;
+    export type Stage = import('./Stage').Stage;
 }
 
 export default SPImageAnnotation;

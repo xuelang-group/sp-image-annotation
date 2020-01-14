@@ -1,4 +1,4 @@
-import Konva from 'konva/types/index-types'
+import Konva from 'konva/types/index-types';
 type ShapeConfig = Konva.ShapeConfig
 
 export declare class Shape<ShapeConfig> {
