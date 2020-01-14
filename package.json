@@ -1,8 +1,9 @@
 {
   "name": "sp-image-annotation",
-  "version": "0.0.2",
+  "version": "0.0.7",
   "description": "A tool for image annotation",
-  "main": "index.js",
+  "main": "./dist/sp-image-annotation.min.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "npm run test",
     "lint": "eslint src",
