@@ -65,6 +65,8 @@ export default class Rect extends Shape {
     if (width && height) {
       target.width(width)
       target.height(height)
+      group.width(width)
+      group.height(height)
     }
   }
 }

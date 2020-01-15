@@ -54,5 +54,6 @@ export default class Circle extends Shape {
 
     activeAnchor.x(target.x())
     target.width(size).height(size)
+    group.width(size).height(size)
   }
 }

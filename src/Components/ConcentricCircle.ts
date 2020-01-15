@@ -82,6 +82,7 @@ export default class ConcentricCircle extends Shape {
         minSize = innerCircle.width() + gap * 2
         size = Math.max(Math.abs(anchorY - outerCircle.y()) * 2.0, minSize)
         outerCircle.width(size).height(size)
+        group.width(size).height(size)
         activeAnchor.x(outerCircle.x())
         activeAnchor.y(Math.min(group.find('.innerAnchor')[0].y() - gap, anchorY))
         break

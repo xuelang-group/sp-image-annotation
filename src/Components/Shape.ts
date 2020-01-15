@@ -15,17 +15,19 @@ export default class Shape {
   protected anchorRadius = 6
 
   protected group: typeof Konva.Group = {}
+  protected $rmBtn: typeof Konva.Path = {}
 
   protected options: Object = {}
+
+  protected selected: Boolean = false
 
   constructor(options: typeof Konva.Shape) {
     this.options = options
     const { x, y } = options
     const group = this.group = new Konva.Group({ x, y, draggable: true })
+    this.$rmBtn = this.createRemoveButton()
 
-    group.on('mousedown', (event: any) => {
-      event.cancelBubble = true
-    })
+    this.initEvents(group)
   }
 
   addAnchor(group: typeof Konva.Group, x: number, y: number, name: string = '') {
@@ -54,7 +56,8 @@ export default class Shape {
       group.draggable(true)
     })
 
-    anchor.on('mouseover', () => {
+    anchor.on('mouseover', (evt: any) => {
+      evt.cancelBubble = true
       const layer = anchor.getLayer()
       document.body.style.cursor = 'pointer'
       anchor.strokeWidth(this.anchorFocusStrokeWidth)
@@ -71,6 +74,37 @@ export default class Shape {
     group.add(anchor)
   }
 
+  createRemoveButton() {
+    const rmBtn = this.$rmBtn = new Konva.Path({
+      x: 10,
+      y: 10,
+      fill: 'rgba(192, 0, 0, 0.6)',
+      data: "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z",
+      scale: {
+        x: 0.04,
+        y: 0.04
+      },
+      width: 30,
+      height: 30
+    })
+
+    rmBtn.on('click', (evt: any) => {
+      const stage = this.group.getStage()
+      const layer = this.group.getLayer()
+      
+      stage.fire('removeshape', this.group)
+
+      this.group.destroy()
+      layer.batchDraw()
+
+      evt.cancelBubble = true
+    })
+
+    this.group.add(rmBtn)
+
+    return rmBtn
+  }
+
   getCoordinate() {
     const group = this.group
     const target = group.find('.target')[0]
@@ -81,6 +115,20 @@ export default class Shape {
     return this.group
   }
 
+  initEvents(group: typeof Konva.Group) {
+    group.on('mousedown', (event: any) => {
+      event.cancelBubble = true
+    });
+
+    group.on('mouseover', () => {
+      this.toggleOperationButtons(true);
+    });
+
+    group.on('mouseout', () => {
+      this.toggleOperationButtons(false);
+    });
+  }
+
   setWidthHeight(width: number, height: number) {
     this.group.width(width).height(height)
     this.group.find('.target')[0].width(width).height(height)
@@ -88,6 +136,17 @@ export default class Shape {
     this.group.find('.topRight')[0].x(width).y(0)
     this.group.find('.bottomRight')[0].x(width).y(height)
     this.group.find('.bottomLeft')[0].x(0).y(height)
+  }
+
+  toggleOperationButtons(show: Boolean) {
+    if (show) {
+      this.$rmBtn.x((this.group.width() - this.$rmBtn.width()) / 2.0).y((this.group.height() - this.$rmBtn.height()) / 2.0).show()
+      this.$rmBtn.moveToTop()
+    } else {
+      this.$rmBtn.hide()
+    }
+
+    this.group.getLayer().batchDraw()
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {
