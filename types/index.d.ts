@@ -14,7 +14,6 @@ declare namespace SPImageAnnotation {
     export type Layer = import('./Layer').Layer;
 
     export const Stage: typeof import('./Stage').Stage;
-    export type StageConfig = import('./Stage').StageConfig;
     export type Stage = import('./Stage').Stage;
 }
 
