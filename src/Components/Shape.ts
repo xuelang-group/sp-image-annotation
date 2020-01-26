@@ -91,7 +91,7 @@ export default class Shape {
     rmBtn.on('click', (evt: any) => {
       const stage = this.group.getStage()
       const layer = this.group.getLayer()
-      
+
       stage.fire('removeshape', this.group)
 
       this.group.destroy()
@@ -153,3 +153,34 @@ export default class Shape {
     throw new Error(`updateAnchor should be overrided, activeAnchor: ${activeAnchor}`)
   }
 }
+
+export type ShapeType = {
+  shapeName: string,
+  type: string,
+  text: string,
+  stroke: string,
+  strokeWidth: number,
+
+  anchorStroke: string,
+  anchorFill: string,
+  anchorStrokeWidth: number,
+  anchorFocusStrokeWidth: number,
+  anchorRadius: number,
+
+  group: typeof Konva.Group,
+  $rmBtn: typeof Konva.Path,
+
+  options: Object,
+
+  selected: Boolean,
+
+  constructor(options: typeof Konva.Shape): ShapeType,
+  addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): void,
+  createRemoveButton(): typeof Konva.Path,
+  getCoordinate(): Array<number>[4],
+  getTarget(): typeof Konva.Group,
+  initEvents(group: typeof Konva.Group): void,
+  setWidthHeight(width: number, height: number): void,
+  toggleOperationButtons(show: Boolean): void,
+  updateAnchor(activeAnchor: typeof Konva.Anchor): void
+};
