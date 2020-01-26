@@ -29,6 +29,14 @@ export default class Annotation {
     this.initStage(options)
   }
 
+  getShapeData() {
+    const shapes = this.shapes.map(function (shape) {
+      return { type: shape.type, coordinate: shape.getCoordinate() }
+    })
+
+    return shapes
+  }
+
   getStage() {
     return this.stage
   }

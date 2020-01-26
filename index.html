@@ -50,12 +50,12 @@
   </div>
 
   <script>
-    function save() {
+    function showShapeData(shapes) {
       var $result = document.getElementById('result');
       var viewports = []
 
       shapes.map(function (shape) {
-        viewports.push({ type: shape.type, coordinate: shape.getCoordinate() })
+        viewports.push({ type: shape.type, coordinate: shape.coordinate })
       })
 
       $result.innerHTML = JSON.stringify(viewports);
@@ -80,6 +80,10 @@
       })
       
       spImageAnnotation.setImage('./demo/demo.jpg')
+
+      setInterval(function() {
+        showShapeData(spImageAnnotation.getShapeData())
+      }, 3000)
     }
 
     function initKonva() {
