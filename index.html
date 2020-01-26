@@ -76,10 +76,9 @@
       var spImageAnnotation = new SpImageAnnotation.Annotation({
         container: containerId,
         width: container.clientWidth,
-        height: container.clientHeight
+        height: container.clientHeight,
+        imgSrc: './demo/demo.jpg'
       })
-      
-      spImageAnnotation.setImage('./demo/demo.jpg')
 
       setInterval(function() {
         showShapeData(spImageAnnotation.getShapeData())

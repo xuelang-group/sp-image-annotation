@@ -10,7 +10,8 @@ type AnnotationOptions = {
   container: string,
   shapes?: string[],
   width?: number,
-  height?: number
+  height?: number,
+  imgSrc?: string
 }
 
 export default class Annotation {
@@ -88,7 +89,7 @@ export default class Annotation {
   }
 
   initStage(options: AnnotationOptions) {
-    const { container = '', width, height } = options
+    const { container = '', width, height, imgSrc = '' } = options
     const $container = this.$container = document.getElementById(container)
 
     this.initToolbar(options, $container)
@@ -101,7 +102,7 @@ export default class Annotation {
 
     this.$img.setAttribute('src', '')
     this.$img.setAttribute('class', 'image')
-    this.$img.setAttribute('src', '')
+    this.$img.setAttribute('src', imgSrc)
 
     this.$canvas.setAttribute('id', 'cutimage')
     this.$canvas.setAttribute('class', 'canvas')
