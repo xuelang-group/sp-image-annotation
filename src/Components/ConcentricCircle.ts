@@ -19,6 +19,7 @@ export default class ConcentricCircle extends Shape {
     const innerCircle = new Konva.Circle({ name: 'target', x: 0, y: 0, width: 1, height: 1, stroke: this.stroke, strokeWidth: this.strokeWidth })
     const outerCircle = new Konva.Circle({ name: 'target', x: 0, y: 0, width: 5, height: 5, stroke: this.stroke, strokeWidth: this.strokeWidth })
 
+    group.__$$this = this
     group.add(innerCircle)
     group.add(outerCircle)
 
@@ -55,6 +56,18 @@ export default class ConcentricCircle extends Shape {
     innerCircle.y(size / 2.0)
     innerCircle.width(innerWidth)
     innerCircle.height(innerHeight)
+  }
+
+  showAnchors(isShow: boolean) {
+    const outerAnchor = this.group.find('.outerAnchor')[0]
+    const innerAnchor = this.group.find('.innerAnchor')[0]
+    if (isShow) {
+      outerAnchor.show()
+      innerAnchor.show()
+    } else {
+      outerAnchor.hide()
+      innerAnchor.hide()
+    }
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {

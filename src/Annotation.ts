@@ -245,17 +245,19 @@ export default class Annotation {
     this.$img.setAttribute('src', src)
   }
 
-  select(shape: ShapeType) {
+  select(shape: any) {
     this.lastSelected = shape
 
-    shape = shape.parent || shape
-    shape.draggable(true)
+    const group = shape.parent || shape
+    group.draggable(true)
+
+    group.__$$this.showAnchors(true)
   }
 
   unselect(shape?: ShapeType) {
     this.lastSelected = null
     this.shapes.map(shape => {
-      shape.getTarget().draggable(false)
+      shape.unselect()
     })
   }
 }

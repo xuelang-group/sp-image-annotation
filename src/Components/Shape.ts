@@ -40,7 +40,8 @@ export default class Shape {
       strokeWidth: this.anchorStrokeWidth,
       radius: this.anchorRadius,
       draggable: true,
-      dragOnTop: false
+      dragOnTop: false,
+      visible: false
     })
 
     anchor.on('dragmove', () => {
@@ -132,6 +133,15 @@ export default class Shape {
     this.group.find('.bottomLeft')[0].x(0).y(height)
   }
 
+  select() {
+    this.getTarget().draggable(false)
+    this.showAnchors(true)
+  }
+
+  showAnchors(isShow: boolean) {
+
+  }
+
   toggleOperationButtons(show: Boolean) {
     if (show) {
       this.$rmBtn.x((this.group.width() - this.$rmBtn.width()) / 2.0).y((this.group.height() - this.$rmBtn.height()) / 2.0).show()
@@ -141,6 +151,11 @@ export default class Shape {
     }
 
     this.group.getLayer().batchDraw()
+  }
+
+  unselect() {
+    this.getTarget().draggable(false)
+    this.showAnchors(false)
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {
@@ -180,5 +195,7 @@ export type ShapeType = {
   toggleOperationButtons(show: Boolean): void,
   updateAnchor(activeAnchor: typeof Konva.Anchor): void,
   points(points?: number[]): number[],
-  draggable(draggable: boolean): void
+  draggable(draggable: boolean): void,
+  select(): void,
+  unselect(): void
 };

@@ -18,6 +18,7 @@ export default class Circle extends Shape {
     const group = this.group
     const circle = new Konva.Circle({ name: 'target', x: 0, y: 0, radius: 1, stroke: this.stroke, strokeWidth: this.strokeWidth })
 
+    group.__$$this = this
     group.add(circle)
 
     this.addAnchor(group, x, y, 'top')
@@ -42,6 +43,15 @@ export default class Circle extends Shape {
     circle.y(size / 2.0)
     circle.width(size)
     circle.height(size)
+  }
+
+  showAnchors(isShow: boolean) {
+    const anchor = this.group.find('.top')[0]
+    if (isShow) {
+      anchor.show()
+    } else {
+      anchor.hide()
+    }
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {

@@ -18,6 +18,7 @@ export default class Rect extends Shape {
     const group = this.group
     const rect = new Konva.Rect({ name: 'target', x: 0, y: 0, width, height, stroke: this.stroke, strokeWidth: this.strokeWidth })
 
+    group.__$$this = this
     group.add(rect)
 
     this.addAnchor(group, x, y, 'topLeft')
@@ -67,6 +68,24 @@ export default class Rect extends Shape {
       target.height(height)
       group.width(width)
       group.height(height)
+    }
+  }
+
+  showAnchors(isShow: boolean) {
+    const topLeft = this.group.find('.topLeft')[0]
+    const topRight = this.group.find('.topRight')[0]
+    const bottomRight = this.group.find('.bottomRight')[0]
+    const bottomLeft = this.group.find('.bottomLeft')[0]
+    if (isShow) {
+      topLeft.show()
+      topRight.show()
+      bottomRight.show()
+      bottomLeft.show()
+    } else {
+      topLeft.hide()
+      topRight.hide()
+      bottomRight.hide()
+      bottomLeft.hide()
     }
   }
 }
