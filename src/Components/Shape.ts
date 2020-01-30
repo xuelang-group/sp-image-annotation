@@ -24,7 +24,7 @@ export default class Shape {
   constructor(options: typeof Konva.Shape) {
     this.options = options
     const { x, y } = options
-    const group = this.group = new Konva.Group({ x, y, draggable: true })
+    const group = this.group = new Konva.Group({ x, y, draggable: false })
     this.$rmBtn = this.createRemoveButton()
 
     this.initEvents(group)
@@ -116,17 +116,11 @@ export default class Shape {
   }
 
   initEvents(group: typeof Konva.Group) {
-    group.on('mousedown', (event: any) => {
-      event.cancelBubble = true
-    });
-
-    group.on('mouseover', () => {
-      this.toggleOperationButtons(true);
-    });
-
-    group.on('mouseout', () => {
-      this.toggleOperationButtons(false);
-    });
+    group.on('mousedown', (e: any) => {
+      if (this.getTarget().draggable()) {
+        e.cancelBubble = true;
+      }
+    })
   }
 
   setWidthHeight(width: number, height: number) {
@@ -174,6 +168,8 @@ export type ShapeType = {
 
   selected: Boolean,
 
+  parent: ShapeType,
+
   constructor(options: typeof Konva.Shape): ShapeType,
   addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): void,
   createRemoveButton(): typeof Konva.Path,
@@ -182,5 +178,7 @@ export type ShapeType = {
   initEvents(group: typeof Konva.Group): void,
   setWidthHeight(width: number, height: number): void,
   toggleOperationButtons(show: Boolean): void,
-  updateAnchor(activeAnchor: typeof Konva.Anchor): void
+  updateAnchor(activeAnchor: typeof Konva.Anchor): void,
+  points(points?: number[]): number[],
+  draggable(draggable: boolean): void
 };

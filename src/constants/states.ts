@@ -1,0 +1,1 @@
+export default { 'IDLE': 'IDLE', 'DRAWING': 'DRAWING', 'SELECT': 'SELECT' }
