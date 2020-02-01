@@ -40,11 +40,33 @@ export default class Annotation {
 
   ctrlDown: Boolean = false
 
+  stepFactor: number = 1.2
+  realWidth: number
+  realHeight: number
   widthRatio: number
   heightRatio: number
+  naturalWidth: number
+  naturalHeight: number
 
   constructor(options: AnnotationOptions) {
     this.initStage(options)
+  }
+
+  change(factor: number) {
+    const width = this.realWidth * factor
+    const height = this.realHeight * factor
+
+    this.realWidth = width
+    this.realHeight = height
+    this.widthRatio = width / this.naturalWidth
+    this.heightRatio = height / this.naturalHeight
+    this.stage.width(width).height(height)
+    this.$stage.style.width = `${width}px`
+    this.$stage.style.height = `${height - this.$toolbar.clientHeight}px`
+    this.$img.resize({ width, height })
+    this.resizeShapes(factor)
+
+    this.layer.batchDraw()
   }
 
   getShapeData() {
@@ -159,10 +181,20 @@ export default class Annotation {
       if (e.keyCode === 17) {
         this.ctrlDown = true;
       }
+
+      if (this.ctrlDown) {
+        if (e.keyCode === 187) {
+          this.change(this.stepFactor)
+        } else if (e.keyCode === 189) {
+          this.change(1 / this.stepFactor)
+        }
+      }
     })
 
-    window.addEventListener('keyup', () => {
-      this.ctrlDown = false;
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 17) {
+        this.ctrlDown = false;
+      }
     })
   }
 
@@ -176,12 +208,8 @@ export default class Annotation {
     this.$img = new ImageHelper({ src: imgSrc, container: this.$stage, className: 'image' })
     this.$img.onload((e: Event) => {
       const img = this.$img.getDOM()
-      const naturalWidth: number = parseFloat(img.naturalWidth)
-      const naturalHeight: number = parseFloat(img.naturalHeight)
-      const realWidth: number = this.$container.clientWidth
-      const realHeight: number = this.$container.clientHeight
-      this.widthRatio = realWidth / naturalWidth
-      this.heightRatio = realHeight / naturalHeight
+      this.naturalWidth = parseFloat(img.naturalWidth)
+      this.naturalHeight = parseFloat(img.naturalHeight)
       this.resize(this.$container.clientWidth, this.$container.clientHeight)
     })
     this.$canvas = document.createElement('div')
@@ -238,9 +266,24 @@ export default class Annotation {
   }
 
   resize(width: number, height: number) {
+    this.realWidth = width
+    this.realHeight = height
+    this.widthRatio = width / this.naturalWidth
+    this.heightRatio = height / this.naturalHeight
     this.stage.width(width).height(height)
     this.$stage.style.width = `${width}px`
     this.$stage.style.height = `${height - this.$toolbar.clientHeight}px`
+    this.$img.resize({ width, height })
+
+    this.layer.batchDraw()
+  }
+
+  resizeShapes(factor: number) {
+    this.shapes.map(shape => {
+      shape.setWidthHeight(shape.getTarget().width() * factor, shape.getTarget().height() * factor)
+      shape.getTarget().x(shape.getTarget().x() * factor)
+      shape.getTarget().y(shape.getTarget().y() * factor)
+    })
   }
 
   set(property?: string, value?: any) {
