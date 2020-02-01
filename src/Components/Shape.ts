@@ -106,10 +106,10 @@ export default class Shape {
     return rmBtn
   }
 
-  getCoordinate() {
+  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
     const group = this.group
     const target = group.find('.target')[0]
-    return [group.x(), group.y(), target.width(), target.height()]
+    return [group.x() / widthRatio, group.y() / heightRatio, target.width() / widthRatio, target.height() / heightRatio]
   }
 
   getTarget() {
@@ -188,7 +188,7 @@ export type ShapeType = {
   constructor(options: typeof Konva.Shape): ShapeType,
   addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): void,
   createRemoveButton(): typeof Konva.Path,
-  getCoordinate(): Array<number>[4],
+  getCoordinate(widthRatio: number, heightRatio: number): Array<number>[4],
   getTarget(): typeof Konva.Group,
   initEvents(group: typeof Konva.Group): void,
   setWidthHeight(width: number, height: number): void,

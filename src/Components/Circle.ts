@@ -24,9 +24,9 @@ export default class Circle extends Shape {
     this.addAnchor(group, x, y, 'top')
   }
 
-  getCoordinate() {
+  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
     const group = this.group
-    return [group.x(), group.y(), group.width() / 2.0]
+    return [group.x() / widthRatio, group.y() / heightRatio, group.width() / widthRatio / 2.0]
   }
 
   setWidthHeight(width: number, height: number) {

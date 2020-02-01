@@ -4,6 +4,7 @@ import { ShapeType } from './Components/Shape'
 import Layer, { LayerType } from './Layer'
 import Components from './Components/index'
 import STAGE_STATE from './constants/states'
+import ImageHelper, { ImageType } from './helpers/Image'
 
 import './less/annotation.less'
 
@@ -28,7 +29,7 @@ export default class Annotation {
   layer: LayerType
 
   $toolbar: HTMLElement
-  $img: HTMLImageElement
+  $img: any
   $canvas: HTMLElement
 
   isPaint: Boolean
@@ -39,13 +40,16 @@ export default class Annotation {
 
   ctrlDown: Boolean = false
 
+  widthRatio: number
+  heightRatio: number
+
   constructor(options: AnnotationOptions) {
     this.initStage(options)
   }
 
   getShapeData() {
-    const shapes = this.shapes.map(function (shape) {
-      return { type: shape.type, coordinate: shape.getCoordinate() }
+    const shapes = this.shapes.map((shape) => {
+      return { type: shape.type, coordinate: shape.getCoordinate(this.widthRatio, this.heightRatio) }
     })
 
     return shapes
@@ -128,7 +132,6 @@ export default class Annotation {
       this.isPaint = false
       this.stageState = STAGE_STATE.IDLE
     }
-    // this.set('draggable', false)
   }
 
   handleRemoveShape(group: typeof Konva.Group) {
@@ -170,20 +173,25 @@ export default class Annotation {
     this.$toolbar = this.initToolbar(options, $container)
 
     this.$stage = document.createElement('div')
-    this.$img = document.createElement('img')
+    this.$img = new ImageHelper({ src: imgSrc, container: this.$stage, className: 'image' })
+    this.$img.onload((e: Event) => {
+      const img = this.$img.getDOM()
+      const naturalWidth: number = parseFloat(img.naturalWidth)
+      const naturalHeight: number = parseFloat(img.naturalHeight)
+      const realWidth: number = this.$container.clientWidth
+      const realHeight: number = this.$container.clientHeight
+      this.widthRatio = realWidth / naturalWidth
+      this.heightRatio = realHeight / naturalHeight
+      this.resize(this.$container.clientWidth, this.$container.clientHeight)
+    })
     this.$canvas = document.createElement('div')
 
     this.$stage.setAttribute('class', 'spia-canvas-container')
 
-    this.$img.setAttribute('src', '')
-    this.$img.setAttribute('class', 'image')
-    this.$img.onload = () => { this.resize(this.$img.clientWidth, this.$img.clientHeight); console.log(this.$img.clientWidth / this.$img.naturalWidth, this.$img.clientHeight / this.$img.naturalHeight) }
-    this.$img.setAttribute('src', imgSrc)
-
     this.$canvas.setAttribute('id', 'cutimage')
     this.$canvas.setAttribute('class', 'canvas')
 
-    this.$stage.appendChild(this.$img)
+    this.$stage.appendChild(this.$img.getDOM())
     this.$stage.appendChild(this.$canvas)
     this.$container.appendChild(this.$stage)
 
@@ -242,7 +250,7 @@ export default class Annotation {
   }
 
   setImage(src: string) {
-    this.$img.setAttribute('src', src)
+    this.$img.setImageSrc(src)
   }
 
   select(shape: any) {
