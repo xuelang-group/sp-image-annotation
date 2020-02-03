@@ -33,6 +33,7 @@ export default class Annotation {
   $canvas: HTMLElement
 
   isPaint: Boolean
+  isDrawingLine: Boolean
   lastX: number
   lastY: number
   lastShape: ShapeType
@@ -81,6 +82,26 @@ export default class Annotation {
     return this.stage
   }
 
+  handleKeydown(e: any) {
+    if (e.keyCode === 17) {
+      this.ctrlDown = true;
+    }
+
+    if (this.ctrlDown) {
+      if (e.keyCode === 187) {
+        this.change(this.stepFactor)
+      } else if (e.keyCode === 189) {
+        this.change(1 / this.stepFactor)
+      }
+    }
+
+    if (e.keyCode === 13) {
+      this.isPaint = false
+      this.stageState = STAGE_STATE.IDLE
+      this.isDrawingLine = false
+    }
+  }
+
   /**
    * 1、按下鼠标左键，如果在任一图形区域内，则：
    *   1）如果在空闲状态下，则选中图形，进入选中状态
@@ -114,13 +135,29 @@ export default class Annotation {
       }
     }
 
-    if (this.stageState === STAGE_STATE.DRAWING) {
+    if (this.isDrawingLine) {
+      const pos = this.stage.getPointerPosition();
+      const pts = [...this.lastShape.points(), ...[pos.x - this.lastX, pos.y - this.lastY]]
+      this.lastShape.points(pts)
+
+      const startPointX = pts[0]
+      const startPointY = pts[1]
+      const endPointX = pts[pts.length - 2]
+      const endPointY = pts[pts.length - 1]
+
+      if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
+        this.isPaint = false
+        this.stageState = STAGE_STATE.IDLE
+        this.isDrawingLine = false
+      }
+    } else if (this.stageState === STAGE_STATE.DRAWING) {
       const { x, y } = this.stage.getPointerPosition();
       this.lastX = x;
       this.lastY = y;
       this.lastShape = new this.SHAPES_SUPPORTED[this.shapeType]({ x: this.lastX, y: this.lastY, width: 1, height: 1 });
       this.shapes.push(this.lastShape);
       this.layer.add(this.lastShape.getTarget());
+      this.isDrawingLine = this.shapeType === 'LINE';
     }
   }
 
@@ -135,7 +172,6 @@ export default class Annotation {
       switch (this.shapeType) {
         case 'LINE':
         case 'POLYGON':
-          this.lastShape.points([...this.lastShape.points(), ...[pos.x - this.lastX, pos.y - this.lastY]])
           break;
         default:
           const width = Math.max(0, pos.x - this.lastX);
@@ -151,8 +187,10 @@ export default class Annotation {
 
   handleMouseUp() {
     if (this.stageState === STAGE_STATE.DRAWING) {
-      this.isPaint = false
-      this.stageState = STAGE_STATE.IDLE
+      if (!this.isDrawingLine) {
+        this.isPaint = false
+        this.stageState = STAGE_STATE.IDLE
+      }
     }
   }
 
@@ -177,19 +215,7 @@ export default class Annotation {
       e.preventDefault()
     })
 
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode === 17) {
-        this.ctrlDown = true;
-      }
-
-      if (this.ctrlDown) {
-        if (e.keyCode === 187) {
-          this.change(this.stepFactor)
-        } else if (e.keyCode === 189) {
-          this.change(1 / this.stepFactor)
-        }
-      }
-    })
+    window.addEventListener('keydown', this.handleKeydown.bind(this))
 
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 17) {

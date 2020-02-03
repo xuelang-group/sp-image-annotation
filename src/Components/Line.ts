@@ -17,6 +17,7 @@ export default class Line extends Shape {
     const group = this.group
     const line = new Konva.Line({ name: 'target', points: [0, 0], stroke: this.stroke, strokeWidth: this.strokeWidth })
 
+    group.__$$this = this
     group.add(line)
   }
 
@@ -25,6 +26,15 @@ export default class Line extends Shape {
 
     if (!pts || !pts.length) {
       return line.points()
+    }
+
+    const startPointX = pts[0]
+    const startPointY = pts[1]
+    const endPointX = pts[pts.length - 2]
+    const endPointY = pts[pts.length - 1]
+
+    if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
+      line.closed(true)
     }
     return line.points(pts)
   }
