@@ -3,7 +3,8 @@
       "baseUrl": ".",
       "paths": {
         "konva": [ "node_modules/konva/konva" ],
-        "konva/*": [ "node_modules/konva/*" ]
+        "konva/*": [ "node_modules/konva/*" ],
+        "@/*": ["./src/*"]
       },
       "outDir": "./dist/",
       "noImplicitAny": true,

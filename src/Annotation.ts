@@ -4,7 +4,7 @@ import { ShapeType } from './Components/Shape'
 import Layer, { LayerType } from './Layer'
 import Components from './Components/index'
 import STAGE_STATE from './constants/states'
-import ImageHelper, { ImageType } from './helpers/Image'
+import ImageHelper from './helpers/Image'
 
 import './less/annotation.less'
 
