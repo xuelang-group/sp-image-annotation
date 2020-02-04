@@ -61,7 +61,7 @@ export default class Annotation {
     this.realHeight = height
     this.widthRatio = width / this.naturalWidth
     this.heightRatio = height / this.naturalHeight
-    this.stage.width(width).height(height)
+    this.stage.width(width).height(height - this.$toolbar.clientHeight)
     this.$stage.style.width = `${width}px`
     this.$stage.style.height = `${height - this.$toolbar.clientHeight}px`
     this.$img.resize({ width, height })
