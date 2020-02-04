@@ -72,7 +72,7 @@ export default class Annotation {
 
   getShapeData() {
     const shapes = this.shapes.map((shape) => {
-      return { type: shape.type, coordinate: shape.getCoordinate(this.widthRatio, this.heightRatio) }
+      return { id: shape.getTarget().id(), type: shape.type, coordinate: shape.getCoordinate(this.widthRatio, this.heightRatio) }
     })
 
     return shapes

@@ -1,4 +1,5 @@
 import * as konva from 'konva'
+const uuidv4 = require('uuid/v4')
 const Konva: any = konva
 
 export default class Shape {
@@ -24,7 +25,7 @@ export default class Shape {
   constructor(options: typeof Konva.Shape) {
     this.options = options
     const { x, y } = options
-    const group = this.group = new Konva.Group({ x, y, draggable: false })
+    const group = this.group = new Konva.Group({ id: uuidv4(), x, y, draggable: false })
     this.$rmBtn = this.createRemoveButton()
 
     this.initEvents(group)

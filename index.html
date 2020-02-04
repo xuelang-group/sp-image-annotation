@@ -35,6 +35,7 @@
       display: none;
       padding: 6px;
       background-color: #ffffff;
+      word-break: break-all;
     }
   </style>
 </head>
@@ -55,7 +56,7 @@
       var viewports = []
 
       shapes.map(function (shape) {
-        viewports.push({ type: shape.type, coordinate: shape.coordinate })
+        viewports.push({ id: shape.id, type: shape.type, coordinate: shape.coordinate })
       })
 
       $result.innerHTML = JSON.stringify(viewports);
