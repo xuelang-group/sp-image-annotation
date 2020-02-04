@@ -75,6 +75,10 @@ export default class Shape {
     group.add(anchor)
   }
 
+  close() {
+    return true
+  }
+
   createRemoveButton() {
     const rmBtn = this.$rmBtn = new Konva.Path({
       x: 10,
@@ -115,6 +119,19 @@ export default class Shape {
   getTarget() {
     return this.group
   }
+
+  handleMouseDown(e: any, { lastX, lastY }: { lastX: number, lastY: number }) { }
+
+  handleMouseMove(e: any, { lastX, lastY }: { lastX: number, lastY: number }) {
+    const stage = this.group.getStage();
+    const pos = stage.getPointerPosition();
+    const width = Math.max(0, pos.x - lastX);
+    const height = Math.max(0, pos.y - lastY);
+
+    this.setWidthHeight(width, height);
+  }
+
+  handleMouseUp(e: any) { }
 
   initEvents(group: typeof Konva.Group) {
     group.on('mousedown', (e: any) => {
@@ -187,9 +204,13 @@ export type ShapeType = {
 
   constructor(options: typeof Konva.Shape): ShapeType,
   addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): void,
+  close(forceClose?: boolean): boolean,
   createRemoveButton(): typeof Konva.Path,
   getCoordinate(widthRatio: number, heightRatio: number): Array<number>[4],
   getTarget(): typeof Konva.Group,
+  handleMouseDown(e: any, { lastX, lastY }: { lastX: number, lastY: number }): void,
+  handleMouseMove(e: any, { lastX, lastY }: { lastX: number, lastY: number }): void,
+  handleMouseUp(e: any): void,
   initEvents(group: typeof Konva.Group): void,
   setWidthHeight(width: number, height: number): void,
   toggleOperationButtons(show: Boolean): void,

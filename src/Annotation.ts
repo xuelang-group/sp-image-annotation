@@ -96,6 +96,7 @@ export default class Annotation {
     }
 
     if (e.keyCode === 13) {
+      this.lastShape.close(true)
       this.isPaint = false
       this.stageState = STAGE_STATE.IDLE
       this.isDrawingLine = false
@@ -117,12 +118,10 @@ export default class Annotation {
     this.unselect();
     if (this.ctrlDown) {
       this.stageState = STAGE_STATE.DRAWING;
-      this.isPaint = true;
     } else {
       if (e.target === this.stage) {
         if (this.stageState === STAGE_STATE.IDLE) {
           this.stageState = STAGE_STATE.DRAWING;
-          this.isPaint = true;
         } else if (this.stageState === STAGE_STATE.SELECT) {
           this.stageState = STAGE_STATE.IDLE;
         } else if (this.stageState === STAGE_STATE.DRAWING) {
@@ -135,21 +134,8 @@ export default class Annotation {
       }
     }
 
-    if (this.isDrawingLine) {
-      const pos = this.stage.getPointerPosition();
-      const pts = [...this.lastShape.points(), ...[pos.x - this.lastX, pos.y - this.lastY]]
-      this.lastShape.points(pts)
-
-      const startPointX = pts[0]
-      const startPointY = pts[1]
-      const endPointX = pts[pts.length - 2]
-      const endPointY = pts[pts.length - 1]
-
-      if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
-        this.isPaint = false
-        this.stageState = STAGE_STATE.IDLE
-        this.isDrawingLine = false
-      }
+    if (this.isPaint) {
+      this.lastShape.handleMouseDown(e, { lastX: this.lastX, lastY: this.lastY })
     } else if (this.stageState === STAGE_STATE.DRAWING) {
       const { x, y } = this.stage.getPointerPosition();
       this.lastX = x;
@@ -157,29 +143,17 @@ export default class Annotation {
       this.lastShape = new this.SHAPES_SUPPORTED[this.shapeType]({ x: this.lastX, y: this.lastY, width: 1, height: 1 });
       this.shapes.push(this.lastShape);
       this.layer.add(this.lastShape.getTarget());
-      this.isDrawingLine = this.shapeType === 'LINE';
+      this.isPaint = true
     }
   }
 
-  handleMouseMove() {
+  handleMouseMove(e: any) {
     if (this.stageState === STAGE_STATE.IDLE) {
       return;
     } else if (this.stageState === STAGE_STATE.SELECT) {
 
     } else if (this.stageState === STAGE_STATE.DRAWING && this.isPaint) {
-      const pos = this.stage.getPointerPosition();
-
-      switch (this.shapeType) {
-        case 'LINE':
-        case 'POLYGON':
-          break;
-        default:
-          const width = Math.max(0, pos.x - this.lastX);
-          const height = Math.max(0, pos.y - this.lastY);
-
-          this.lastShape.setWidthHeight(width, height);
-          break;
-      }
+      this.lastShape.handleMouseMove(e, { lastX: this.lastX, lastY: this.lastY })
     }
 
     this.layer.batchDraw();
@@ -187,7 +161,7 @@ export default class Annotation {
 
   handleMouseUp() {
     if (this.stageState === STAGE_STATE.DRAWING) {
-      if (!this.isDrawingLine) {
+      if (this.lastShape.close()) {
         this.isPaint = false
         this.stageState = STAGE_STATE.IDLE
       }
