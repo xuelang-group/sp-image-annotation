@@ -61,10 +61,11 @@ export default class Annotation {
     this.realHeight = height
     this.widthRatio = width / this.naturalWidth
     this.heightRatio = height / this.naturalHeight
-    this.stage.width(width).height(height - this.$toolbar.clientHeight)
+    const viewHeight = height - this.$toolbar.clientHeight
+    this.stage.width(width).height(viewHeight)
     this.$stage.style.width = `${width}px`
-    this.$stage.style.height = `${height - this.$toolbar.clientHeight}px`
-    this.$img.resize({ width, height })
+    this.$stage.style.height = `${viewHeight}px`
+    this.$img.resize({ width, height: viewHeight })
     this.resizeShapes(factor)
 
     this.layer.batchDraw()
