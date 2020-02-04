@@ -141,6 +141,10 @@ export default class Shape {
     })
   }
 
+  resize(data: { width?: number, height?: number, ratio?: number }) {
+    return this.setWidthHeight(data.width, data.height)
+  }
+
   setWidthHeight(width: number, height: number) {
     this.group.width(width).height(height)
     this.group.find('.target')[0].width(width).height(height)
@@ -217,6 +221,7 @@ export type ShapeType = {
   updateAnchor(activeAnchor: typeof Konva.Anchor): void,
   points(points?: number[]): number[],
   draggable(draggable: boolean): void,
+  resize(data: { width?: number, height?: number, ratio?: number }): void,
   select(): void,
   unselect(): void
 };

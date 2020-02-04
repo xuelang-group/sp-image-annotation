@@ -12,6 +12,7 @@ export default class Line extends Shape {
   type: string = 'LINE'
   text: string = '线段'
 
+  line: KonvaType.Line
   tmpLine: KonvaType.Line
 
   constructor(options: typeof Konva.Line) {
@@ -20,6 +21,7 @@ export default class Line extends Shape {
     const group = this.group
     const line = new Konva.Line({ name: 'target', points: [0, 0], stroke: this.stroke, strokeWidth: this.strokeWidth })
 
+    this.line = line
     this.tmpLine = new Konva.Line({ points: [0, 0], stroke: this.stroke, strokeWidth: this.strokeWidth })
 
     group.__$$this = this
@@ -79,6 +81,10 @@ export default class Line extends Shape {
       line.closed(true)
     }
     return line.points(pts)
+  }
+
+  resize(data: { width?: number, height?: number, ratio?: number }) {
+    this.points(this.points().map((point: number) => point * data.ratio))
   }
 
   setWidthHeight(width: number, height: number) { }

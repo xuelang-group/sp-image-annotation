@@ -280,9 +280,10 @@ export default class Annotation {
 
   resizeShapes(factor: number) {
     this.shapes.map(shape => {
-      shape.setWidthHeight(shape.getTarget().width() * factor, shape.getTarget().height() * factor)
-      shape.getTarget().x(shape.getTarget().x() * factor)
-      shape.getTarget().y(shape.getTarget().y() * factor)
+      const targetShape = shape.getTarget()
+      shape.resize({ width: targetShape.width() * factor, height: targetShape.height() * factor, ratio: factor })
+      targetShape.x(targetShape.x() * factor)
+      targetShape.y(targetShape.y() * factor)
     })
   }
 
