@@ -202,6 +202,8 @@ export default class Annotation {
   initStage(options: AnnotationOptions) {
     const { container = '', width, height, imgSrc = '' } = options
     const $container = this.$container = document.getElementById(container)
+    const $canvasContainer = document.createElement('div')
+    $canvasContainer.setAttribute('class', 'spia-canvas-container')
 
     this.$toolbar = this.initToolbar(options, $container)
 
@@ -215,14 +217,15 @@ export default class Annotation {
     })
     this.$canvas = document.createElement('div')
 
-    this.$stage.setAttribute('class', 'spia-canvas-container')
+    this.$stage.setAttribute('class', 'spia-canvas')
 
     this.$canvas.setAttribute('id', 'cutimage')
     this.$canvas.setAttribute('class', 'canvas')
 
     this.$stage.appendChild(this.$img.getDOM())
     this.$stage.appendChild(this.$canvas)
-    this.$container.appendChild(this.$stage)
+    $canvasContainer.appendChild(this.$stage)
+    this.$container.appendChild($canvasContainer)
 
     this.stage = new Stage({
       container: 'cutimage',
