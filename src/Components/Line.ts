@@ -67,11 +67,15 @@ export default class Line extends Shape {
       this.tmpLine.points([0, 0]);
     }
 
+    this.anchors.forEach(anchor => {
+      anchor.remove();
+    });
+    this.anchors = [];
     for (let index = 0; index < pts.length; index += 2) {
       const x = pts[index];
       const y = pts[index + 1];
 
-      this.anchors.push(this.addAnchor(this.group, x, y));
+      this.anchors.push(this.addAnchor(this.group, x, y, `${index}`));
     }
 
     this.$rmBtn.moveToTop();
@@ -120,6 +124,17 @@ export default class Line extends Shape {
     return line.points(pts);
   }
 
+  replacePoint(index: number, tgt: Array<number>) {
+    const line = this.getTarget().find('.target')[0];
+    const pts = line.points();
+
+    const [x, y] = tgt;
+    pts[index] = x;
+    pts[index + 1] = y;
+
+    line.points(pts);
+  }
+
   resize(data: { width?: number; height?: number; ratio?: number }) {
     this.points(this.points().map((point: number) => point * data.ratio));
   }
@@ -130,12 +145,19 @@ export default class Line extends Shape {
   }
 
   showAnchors(isShow: boolean) {
-    if (isShow) {
-      this.anchors.forEach(anchor => {
+    this.anchors.forEach(anchor => {
+      if (isShow) {
         anchor.show();
-      });
-    }
+      } else {
+        anchor.hide();
+      }
+    });
 
     return isShow;
+  }
+
+  updateAnchor(anchor: KonvaType.Circle) {
+    const index = parseInt(anchor.name(), 10);
+    this.replacePoint(index, [anchor.x(), anchor.y()]);
   }
 }
