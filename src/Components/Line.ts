@@ -51,20 +51,21 @@ export default class Line extends Shape {
     const startPointY = pts[1];
     const endPointX = pts[pts.length - 2];
     const endPointY = pts[pts.length - 1];
+    let isForceClose = forceClose;
 
     if (
       pts.length > 2 &&
       Math.abs(startPointX - endPointX) <= 3 &&
       Math.abs(endPointY - startPointY) <= 3
     ) {
-      forceClose = true;
+      isForceClose = true;
     }
 
-    if (forceClose) {
+    if (isForceClose) {
       this.tmpLine.points([0, 0]);
     }
 
-    return forceClose;
+    return isForceClose;
   }
 
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {

@@ -61,6 +61,12 @@ export default class Circle extends Shape {
     circle.y(size / 2.0);
     circle.width(size);
     circle.height(size);
+
+    this.$rmBtn
+      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+      .show();
+    this.$rmBtn.moveToTop();
   }
 
   showAnchors(isShow: boolean) {
@@ -70,6 +76,8 @@ export default class Circle extends Shape {
     } else {
       anchor.hide();
     }
+
+    return isShow;
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {

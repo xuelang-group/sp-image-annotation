@@ -88,6 +88,12 @@ export default class ConcentricCircle extends Shape {
     innerCircle.y(size / 2.0);
     innerCircle.width(innerWidth);
     innerCircle.height(innerHeight);
+
+    this.$rmBtn
+      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+      .show();
+    this.$rmBtn.moveToTop();
   }
 
   showAnchors(isShow: boolean) {
@@ -100,6 +106,8 @@ export default class ConcentricCircle extends Shape {
       outerAnchor.hide();
       innerAnchor.hide();
     }
+
+    return isShow;
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {

@@ -102,5 +102,7 @@ export default class Rect extends Shape {
       bottomRight.hide();
       bottomLeft.hide();
     }
+
+    return isShow;
   }
 }
