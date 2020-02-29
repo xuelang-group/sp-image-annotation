@@ -143,24 +143,20 @@ export default class Annotation {
     this.unselect();
     if (this.ctrlDown) {
       this.stageState = STAGE_STATE.DRAWING;
-    } else {
-      if (e.target === this.stage) {
-        if (this.stageState === STAGE_STATE.IDLE) {
-          this.stageState = STAGE_STATE.DRAWING;
-        } else if (this.stageState === STAGE_STATE.SELECT) {
-          this.stageState = STAGE_STATE.IDLE;
-        } else if (this.stageState === STAGE_STATE.DRAWING) {
-          // todo
-        }
-        return;
+    } else if (e.target === this.stage) {
+      if (this.stageState === STAGE_STATE.IDLE) {
+        this.stageState = STAGE_STATE.DRAWING;
+      } else if (this.stageState === STAGE_STATE.SELECT) {
+        this.stageState = STAGE_STATE.IDLE;
+      } else if (this.stageState === STAGE_STATE.DRAWING) {
+        // todo
       }
-      if (
-        this.stageState === STAGE_STATE.IDLE ||
-        (this.stageState === STAGE_STATE.SELECT && e.target !== this.lastSelected)
-      ) {
-        this.select(e.target);
-        this.stageState = STAGE_STATE.SELECT;
-      }
+    } else if (
+      this.stageState === STAGE_STATE.IDLE ||
+      (this.stageState === STAGE_STATE.SELECT && e.target !== this.lastSelected)
+    ) {
+      this.select(e.target);
+      this.stageState = STAGE_STATE.SELECT;
     }
 
     if (this.isPaint) {
