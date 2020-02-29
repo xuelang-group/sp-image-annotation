@@ -21,6 +21,8 @@ export default class Line extends Shape {
 
   tmpLine: KonvaType.Line;
 
+  anchors: Array<KonvaType.Circle> = [];
+
   constructor(options: typeof Konva.Line) {
     super(options);
 
@@ -64,6 +66,16 @@ export default class Line extends Shape {
     if (isForceClose) {
       this.tmpLine.points([0, 0]);
     }
+
+    for (let index = 0; index < pts.length; index += 2) {
+      const x = pts[index];
+      const y = pts[index + 1];
+
+      this.anchors.push(this.addAnchor(this.group, x, y));
+    }
+
+    this.$rmBtn.moveToTop();
+    this.group.moveToTop();
 
     return isForceClose;
   }
@@ -115,5 +127,15 @@ export default class Line extends Shape {
   setWidthHeight() {
     const { group } = this;
     return group;
+  }
+
+  showAnchors(isShow: boolean) {
+    if (isShow) {
+      this.anchors.forEach(anchor => {
+        anchor.show();
+      });
+    }
+
+    return isShow;
   }
 }

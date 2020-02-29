@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import * as konva from 'konva';
+import KonvaType from 'konva/types/index-types';
 
 const uuidv4 = require('uuid/v4');
 
@@ -88,6 +89,8 @@ export default class Shape {
     });
 
     group.add(anchor);
+
+    return anchor;
   }
 
   close() {
@@ -241,7 +244,7 @@ export type ShapeType = {
   parent: ShapeType;
 
   constructor(options: typeof Konva.Shape): ShapeType;
-  addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): void;
+  addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): KonvaType.Circle;
   showAnchors(isShow: boolean): boolean;
   close(forceClose?: boolean): boolean;
   createRemoveButton(): typeof Konva.Path;
