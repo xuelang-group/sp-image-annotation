@@ -284,6 +284,7 @@ export default class Annotation {
     Object.keys(components).forEach((shapeKey: string) => {
       const shape: any = components[shapeKey];
       this.SHAPES_SUPPORTED[shape.type] = shape;
+      this.shapeType = this.shapeType || shape.type;
 
       const shapeBtn = document.createElement('button');
       shapeBtn.setAttribute('id', shape.shapeName);

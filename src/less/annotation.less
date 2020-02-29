@@ -1,50 +1,49 @@
 .spia-toolbar {
-    display         : flex;
-    justify-content : center;
-    padding-top     : 8px;
-    padding-bottom  : 8px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-bottom   : 1px solid #cccccc;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #ccc;
 
+  .btn {
+    padding: 6px 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    cursor: pointer;
+  }
 
-    .btn {
-        padding         : 6px 10px;
-        background-color: rgba(255, 255, 255, 0.8);
-        cursor          : pointer;
-        border-radius   : 3px;
-    }
+  #pencil {
+    padding: 0 7px;
+    border-right: 1px solid #8080804d;
+  }
 
-    #pencil {
-        padding     : 0 7px;
-        border-right: 1px solid #8080804d;
-    }
-
-    #acitonButton {
-        padding: 0 15px;
-    }
+  #acitonButton {
+    padding: 0 15px;
+  }
 }
 
 .spia-canvas-container {
-    width   : 100%;
-    height  : calc(100% - 52px);
-    position: relative;
-    overflow: auto;
+  position: relative;
+  width: 100%;
+  height: calc(100% - 52px);
+  overflow: auto;
 
-    .spia-canvas {
-        width: 100%;
+  .spia-canvas {
+    width: 100%;
 
-        .image {
-            width: 100%;
-        }
-
-        .canvas {
-            position        : absolute;
-            z-index         : 1;
-            top             : 0;
-            left            : 0;
-            bottom          : 0;
-            right           : 0;
-            background-color: rgba(0, 0, 0, 0.1);
-        }
+    .image {
+      width: 100%;
     }
+
+    .canvas {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
 }
