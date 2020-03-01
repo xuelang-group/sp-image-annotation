@@ -1,24 +1,25 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const pkg = require('./package.json');
 const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
-const name = pkg.name;
-let plugins = [
+const pkg = require('./package.json');
+
+const { name } = pkg;
+
+const plugins = [
   new MiniCssExtractPlugin({
     filename: 'dist/[name].css',
     chunkFilename: 'dist/[id].css',
-    ignoreOrder: false
-  })
+    ignoreOrder: false,
+  }),
 ];
 
 module.exports = (env = {}) => {
   const isProd = env.production;
 
   if (isProd) {
-    plugins.push(new webpack.BannerPlugin(`${name} - ${pkg.version}`))
+    plugins.push(new webpack.BannerPlugin(`${name} - ${pkg.version}`));
   } else {
     plugins.push(new HtmlWebpackPlugin({ template: 'index.html' }));
   }
@@ -40,32 +41,26 @@ module.exports = (env = {}) => {
           use: [
             {
               loader: 'babel-loader',
-              options: { cacheDirectory: true }
+              options: { cacheDirectory: true },
             },
-            'ts-loader'
+            'ts-loader',
           ],
           include: /src/,
         },
         {
           test: /\.less$/,
-          use: [
-            'style-loader',
-            'css-loader',
-            'less-loader'
-          ],
+          use: ['style-loader', 'css-loader', 'less-loader'],
         },
         {
           test: /\.css$/,
-          use: [
-            'css-loader'
-          ],
-        }
+          use: ['style-loader', 'css-loader'],
+        },
       ],
     },
     resolve: {
-      extensions: ['.ts', '.js']
+      extensions: ['.ts', '.js'],
     },
-    externals: { 'grapesjs': 'grapesjs' },
-    plugins: plugins,
+    externals: { grapesjs: 'grapesjs' },
+    plugins,
   };
-}
+};

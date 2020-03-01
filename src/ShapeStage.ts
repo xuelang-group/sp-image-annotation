@@ -6,6 +6,7 @@ import Components from './Components/index';
 import STAGE_STATE from './constants/states';
 import ImageHelper from './helpers/Image';
 
+import 'antd/dist/antd.css';
 import './less/annotation.less';
 
 type AnnotationOptions = {
@@ -274,6 +275,7 @@ export default class Annotation {
   initToolbar(options: AnnotationOptions, $container: HTMLElement) {
     const $toolbar = document.createElement('div');
     const $pencil = document.createElement('div');
+    const $buttons: Array<HTMLButtonElement> = [];
 
     $toolbar.setAttribute('class', 'spia-toolbar');
     $pencil.setAttribute('id', 'pencil');
@@ -288,14 +290,19 @@ export default class Annotation {
 
       const shapeBtn = document.createElement('button');
       shapeBtn.setAttribute('id', shape.shapeName);
-      shapeBtn.setAttribute('class', 'btn mr');
+      shapeBtn.setAttribute('class', 'ant-btn mr');
 
       shapeBtn.innerHTML = shape.text;
       shapeBtn.addEventListener('click', () => {
         this.shapeType = shape.type;
+        $buttons.forEach((btn: HTMLButtonElement) => {
+          btn.setAttribute('class', 'ant-btn mr');
+        });
+        shapeBtn.className += ' active';
       });
 
       $pencil.appendChild(shapeBtn);
+      $buttons.push(shapeBtn);
     });
 
     $container.appendChild($toolbar);
