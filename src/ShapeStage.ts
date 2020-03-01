@@ -9,6 +9,8 @@ import ImageHelper from './helpers/Image';
 import 'antd/dist/antd.css';
 import './less/annotation.less';
 
+const EventEmitter = require('events');
+
 type AnnotationOptions = {
   container: string;
   shapes?: string[];
@@ -17,7 +19,7 @@ type AnnotationOptions = {
   imgSrc?: string;
 };
 
-export default class Annotation {
+export default class Annotation extends EventEmitter {
   SHAPES_SUPPORTED: any = {};
 
   $container: HTMLElement;
@@ -73,6 +75,7 @@ export default class Annotation {
   naturalHeight: number;
 
   constructor(options: AnnotationOptions) {
+    super(options);
     this.initStage(options);
   }
 
@@ -374,6 +377,8 @@ export default class Annotation {
     group.draggable(true);
 
     group.$$this.showAnchors(true);
+
+    this.emit('shape:select', group.$$this);
   }
 
   unselect() {

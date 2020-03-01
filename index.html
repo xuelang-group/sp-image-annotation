@@ -31,7 +31,18 @@
       border-radius: 6px;
     }
 
-    .result-container .result-content {
+    .event-container {
+      position: fixed;
+      right: 16px;
+      bottom: 20px;
+      z-index: 1;
+      width: 400px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+    }
+
+    .result-content {
       display: none;
       padding: 6px;
       word-break: break-all;
@@ -49,6 +60,12 @@
     </div>
     <div id="result" class="result-content"></div>
   </div>
+  <div class="event-container">
+    <div class="result-header">
+      <div class="title">事件数据</div>
+    </div>
+    <div id="event" class="result-content"></div>
+  </div>
 
   <script>
     function showShapeData(shapes) {
@@ -60,6 +77,14 @@
       })
 
       $result.innerHTML = JSON.stringify(viewports);
+      $result.style.display = 'block';
+    }
+
+    function showEvent(type, target) {
+      var $result = document.getElementById('event');
+
+      $result.innerHTML = '事件类型：' + type + '<br /> 事件对象：' + target.text + '(' + target.shapeName + ')';
+
       $result.style.display = 'block';
     }
 
@@ -81,11 +106,15 @@
         imgSrc: './demo/demo.jpg'
       })
 
-      window.addEventListener('resize', function() {
+      spImageAnnotation.on('shape:select', function (target) {
+        showEvent('shape:select', target)
+      })
+
+      window.addEventListener('resize', function () {
         spImageAnnotation.resize(document.getElementById(containerId).clientWidth, document.getElementById(containerId).clientHeight)
       })
 
-      setInterval(function() {
+      setInterval(function () {
         showShapeData(spImageAnnotation.getShapeData())
       }, 3000)
     }

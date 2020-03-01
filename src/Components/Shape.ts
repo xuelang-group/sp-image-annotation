@@ -3,11 +3,13 @@
 import * as konva from 'konva';
 import KonvaType from 'konva/types/index-types';
 
+const EventEmitter = require('events');
+
 const uuidv4 = require('uuid/v4');
 
 const Konva: any = konva;
 
-export default class Shape {
+export default class Shape extends EventEmitter {
   protected static shapeName = 'Shape';
 
   protected static type = 'Shape';
@@ -37,6 +39,8 @@ export default class Shape {
   protected selected: Boolean = false;
 
   constructor(options: typeof Konva.Shape) {
+    super(options);
+
     this.options = options;
     const { x, y } = options;
     const group = new Konva.Group({ id: uuidv4(), x, y, draggable: false });
