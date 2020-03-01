@@ -14,12 +14,12 @@ export default class Rect extends Shape {
 
   type: string = 'RECTANGLE';
 
-  text: string = '矩形';
+  protected fill: string = '';
 
   constructor(options: typeof Konva.Rect) {
     super(options);
 
-    const { x, y, width, height } = options;
+    const { x, y, width, height, fill = '' } = options;
     const { group } = this;
     const rect = new Konva.Rect({
       name: 'target',
@@ -27,6 +27,7 @@ export default class Rect extends Shape {
       y: 0,
       width,
       height,
+      fill,
       stroke: this.stroke,
       strokeWidth: this.strokeWidth,
     });
@@ -83,6 +84,7 @@ export default class Rect extends Shape {
       target.height(height);
       group.width(width);
       group.height(height);
+      this.$rmBtn.x((width - this.$rmBtn.width()) / 2.0).y((height - this.$rmBtn.height()) / 2.0);
     }
   }
 

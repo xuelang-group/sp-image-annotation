@@ -26,11 +26,11 @@ export default class Coordinate extends Shape {
       y: 0,
       name: 'axisx',
       points: [0, 0],
-      pointerLength: 20,
-      pointerWidth: 20,
-      fill: 'black',
-      stroke: 'black',
-      strokeWidth: 4,
+      pointerLength: 10,
+      pointerWidth: 10,
+      stroke: this.anchorStroke,
+      fill: this.anchorFill,
+      strokeWidth: this.anchorStrokeWidth,
     });
 
     const axisY = new Konva.Arrow({
@@ -38,11 +38,11 @@ export default class Coordinate extends Shape {
       y: 0,
       name: 'axisy',
       points: [0, 0],
-      pointerLength: 20,
-      pointerWidth: 20,
-      fill: 'black',
-      stroke: 'black',
-      strokeWidth: 4,
+      pointerLength: 10,
+      pointerWidth: 10,
+      stroke: this.anchorStroke,
+      fill: this.anchorFill,
+      strokeWidth: this.anchorStrokeWidth,
     });
 
     group.$$this = this;

@@ -14,7 +14,7 @@ export default class Shape {
 
   protected static text = '形状';
 
-  protected stroke = '#df4b26';
+  protected stroke = '#666';
 
   protected strokeWidth = 2;
 
