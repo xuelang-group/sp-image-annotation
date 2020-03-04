@@ -285,8 +285,15 @@ export default class Annotation extends EventEmitter {
     $toolbar.appendChild($pencil);
 
     const components: any = Components;
+    let shapeKeys = [];
 
-    Object.keys(components).forEach((shapeKey: string) => {
+    if (options.shapes && options.shapes.length) {
+      shapeKeys = options.shapes;
+    } else {
+      shapeKeys = Object.keys(components);
+    }
+
+    shapeKeys.forEach((shapeKey: string) => {
       const shape: any = components[shapeKey];
       this.SHAPES_SUPPORTED[shape.type] = shape;
       this.shapeType = this.shapeType || shape.type;
