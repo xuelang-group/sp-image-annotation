@@ -87,11 +87,21 @@ export default class Annotation extends EventEmitter {
     this.realHeight = height;
     this.widthRatio = width / this.naturalWidth;
     this.heightRatio = height / this.naturalHeight;
-    const viewHeight = height - this.$toolbar.clientHeight;
-    this.stage.width(width).height(viewHeight);
-    this.$stage.style.width = `${width}px`;
-    this.$stage.style.height = `${viewHeight}px`;
-    this.$img.resize({ width, height: viewHeight });
+    const viewHeight = height - this.$toolbar.clientHeight - 5;
+
+    let imageWidth = width;
+    let imageHeight = viewHeight;
+
+    if (width / viewHeight > this.naturalWidth / this.naturalHeight) {
+      imageWidth = (viewHeight * this.naturalWidth) / this.naturalHeight;
+    } else {
+      imageHeight = width / (this.naturalWidth / this.naturalHeight);
+    }
+
+    this.stage.width(imageWidth).height(imageHeight);
+    this.$stage.style.width = `${imageWidth}px`;
+    this.$stage.style.height = `${imageHeight}px`;
+    this.$img.resize({ width: imageWidth, height: imageHeight });
     this.resizeShapes(factor);
 
     this.layer.batchDraw();
@@ -339,10 +349,21 @@ export default class Annotation extends EventEmitter {
     this.realHeight = height;
     this.widthRatio = width / this.naturalWidth;
     this.heightRatio = height / this.naturalHeight;
-    this.stage.width(width).height(height);
-    this.$stage.style.width = `${width}px`;
-    this.$stage.style.height = `${height - this.$toolbar.clientHeight}px`;
-    this.$img.resize({ width, height });
+    const viewHeight = height - this.$toolbar.clientHeight - 5;
+
+    let imageWidth = width;
+    let imageHeight = viewHeight;
+
+    if (imageWidth / imageHeight > this.naturalWidth / this.naturalHeight) {
+      imageWidth = (imageHeight * this.naturalWidth) / this.naturalHeight;
+    } else {
+      imageHeight = imageWidth / (this.naturalWidth / this.naturalHeight);
+    }
+
+    this.stage.width(imageWidth).height(imageHeight);
+    this.$stage.style.width = `${imageWidth}px`;
+    this.$stage.style.height = `${imageHeight}px`;
+    this.$img.resize({ width: imageWidth, height: imageHeight });
 
     this.layer.batchDraw();
   }
