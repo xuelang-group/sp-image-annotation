@@ -84,6 +84,20 @@ export default class Line extends Shape {
     return isForceClose;
   }
 
+  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
+    const { group } = this;
+    const { x, y } = group.position();
+    const target = group.find('.target')[0];
+    const points = [...target.points()];
+
+    for (let index = 0; index < points.length; index += 2) {
+      points[index] = (points[index] + x) / widthRatio;
+      points[index + 1] = (points[index + 1] + y) / heightRatio;
+    }
+
+    return points;
+  }
+
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {
     const stage = this.group.getStage();
     const pos = stage.getPointerPosition();
