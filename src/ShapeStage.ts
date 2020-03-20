@@ -345,7 +345,7 @@ export default class Annotation extends EventEmitter {
     this.realWidth = width;
     this.realHeight = height;
     this.widthRatio = width / this.naturalWidth;
-    this.heightRatio = height / this.naturalHeight;
+    this.heightRatio = (height - this.$toolbar.clientHeight) / this.naturalHeight;
     const viewHeight = height - this.$toolbar.clientHeight - 5;
 
     this.stage.width(width).height(viewHeight);
