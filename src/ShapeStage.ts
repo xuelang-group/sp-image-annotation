@@ -82,16 +82,24 @@ export default class Annotation extends EventEmitter {
   change(factor: number) {
     const width = this.realWidth * factor;
     const height = this.realHeight * factor;
+    const widthRatio = width / this.naturalWidth;
+    const viewHeight = height - this.$toolbar.clientHeight;
+    const heightRatio = viewHeight / this.naturalHeight;
 
     this.realWidth = width;
     this.realHeight = height;
-    this.widthRatio = width / this.naturalWidth;
-    this.heightRatio = height / this.naturalHeight;
-    const viewHeight = height - this.$toolbar.clientHeight;
-    this.stage.width(width).height(viewHeight);
-    this.$stage.style.width = `${width}px`;
-    this.$stage.style.height = `${viewHeight}px`;
-    this.$img.resize({ width, height: viewHeight });
+
+    this.imageScaleRatio = Math.min(widthRatio, heightRatio);
+
+    const imageHeight = this.imageScaleRatio * this.naturalHeight;
+    const imageWidth = this.imageScaleRatio * this.naturalWidth;
+
+    this.stage.width(imageWidth).height(imageHeight);
+    this.$stage.style.width = `${imageWidth}px`;
+    this.$stage.style.height = `${imageHeight}px`;
+
+    this.$img.resize({ width: imageWidth, height: imageHeight });
+
     this.resizeShapes(factor);
 
     this.layer.batchDraw();
@@ -344,14 +352,19 @@ export default class Annotation extends EventEmitter {
   resize(width: number, height: number) {
     this.realWidth = width;
     this.realHeight = height;
-    this.widthRatio = width / this.naturalWidth;
-    this.heightRatio = (height - this.$toolbar.clientHeight) / this.naturalHeight;
-    const viewHeight = height - this.$toolbar.clientHeight - 5;
+    const widthRatio = width / this.naturalWidth;
+    const viewHeight = height - this.$toolbar.clientHeight;
+    const heightRatio = viewHeight / this.naturalHeight;
 
-    this.stage.width(width).height(viewHeight);
-    this.$stage.style.width = `${width}px`;
-    this.$stage.style.height = `${viewHeight}px`;
-    this.$img.resize({ width, height: viewHeight });
+    this.imageScaleRatio = Math.min(widthRatio, heightRatio);
+
+    const imageHeight = this.imageScaleRatio * this.naturalHeight;
+    const imageWidth = this.imageScaleRatio * this.naturalWidth;
+
+    this.stage.width(imageWidth).height(imageHeight);
+    this.$stage.style.width = `${imageWidth}px`;
+    this.$stage.style.height = `${imageHeight}px`;
+    this.$img.resize({ width: imageWidth, height: imageHeight });
 
     this.layer.batchDraw();
   }
