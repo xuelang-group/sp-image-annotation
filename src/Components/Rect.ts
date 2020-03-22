@@ -39,6 +39,10 @@ export default class Rect extends Shape {
     this.addAnchor(group, x, y, 'topRight');
     this.addAnchor(group, x, y, 'bottomRight');
     this.addAnchor(group, x, y, 'bottomLeft');
+
+    if (width && height) {
+      this.setWidthHeight(width, height);
+    }
   }
 
   updateAnchor(activeAnchor: typeof Konva.Anchor) {

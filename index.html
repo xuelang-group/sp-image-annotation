@@ -107,6 +107,10 @@
         imgSrc: './demo/demo.jpg',
       })
 
+      const layer = spImageAnnotation.getStage().getLayers()[0];
+
+      layer.add(new window.SpImageAnnotation.Mask({ x: 10, y: 10, width: 100, height: 100 }).getTarget());
+
       spImageAnnotation.on('shape:select', function (target) {
         showEvent('shape:select', target)
       })
