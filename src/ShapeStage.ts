@@ -85,16 +85,9 @@ export default class Annotation extends EventEmitter {
   }
 
   change(factor: number) {
-    const width = this.realWidth * factor;
-    const height = this.realHeight * factor;
-    const widthRatio = width / this.naturalWidth;
-    const viewHeight = height - this.$toolbar.clientHeight;
-    const heightRatio = viewHeight / this.naturalHeight;
-
-    this.realWidth = width;
-    this.realHeight = height;
-
-    this.imageScaleRatio = Math.min(widthRatio, heightRatio);
+    this.realWidth *= factor;
+    this.realHeight *= factor;
+    this.imageScaleRatio *= factor;
 
     const imageHeight = this.imageScaleRatio * this.naturalHeight;
     const imageWidth = this.imageScaleRatio * this.naturalWidth;

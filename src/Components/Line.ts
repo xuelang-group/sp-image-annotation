@@ -23,7 +23,7 @@ export default class Line extends Shape {
 
   anchors: Array<KonvaType.Circle> = [];
 
-  constructor(options: typeof Konva.Line) {
+  constructor(options: typeof Konva.Line = {}) {
     super(options);
 
     const { group } = this;
