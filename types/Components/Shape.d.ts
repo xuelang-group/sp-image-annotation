@@ -49,7 +49,7 @@ export type ShapeType = {
   showAnchors(isShow: boolean): any;
   close(forceClose?: boolean): boolean;
   createRemoveButton(): typeof Konva.Path;
-  getCoordinate(widthRatio: number, heightRatio: number): Array<number>[4];
+  getCoordinate(ratio: number): Array<number>[4];
   getTarget(): typeof Konva.Group;
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }): any;
   handleMouseMove(e: any, { lastX, lastY }: { lastX: number; lastY: number }): void;

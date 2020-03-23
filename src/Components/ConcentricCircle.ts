@@ -48,14 +48,14 @@ export default class ConcentricCircle extends Shape {
     this.addAnchor(group, x, y + outerCircle.width() / 2.0, 'innerAnchor');
   }
 
-  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
+  getCoordinate(ratio: number = 1) {
     const innerCircle = this.group.find('.target')[0];
     const outerCircle = this.group.find('.target')[1];
     return [
-      innerCircle.x() / widthRatio,
-      innerCircle.y() / heightRatio,
-      innerCircle.width() / widthRatio / 2.0,
-      outerCircle.width() / heightRatio / 2.0,
+      innerCircle.x() / ratio,
+      innerCircle.y() / ratio,
+      innerCircle.width() / ratio / 2.0,
+      outerCircle.width() / ratio / 2.0,
     ];
   }
 

@@ -107,7 +107,7 @@ export default class Annotation extends EventEmitter {
     const shapes = this.shapes.map(shape => ({
       id: shape.getTarget().id(),
       type: shape.type,
-      coordinate: shape.getCoordinate(this.widthRatio, this.heightRatio),
+      coordinate: shape.getCoordinate(this.imageScaleRatio),
     }));
 
     return shapes;

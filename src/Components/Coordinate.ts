@@ -52,9 +52,9 @@ export default class Coordinate extends Shape {
     this.addAnchor(group, 0, 0, 'topLeft');
   }
 
-  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
+  getCoordinate(ratio: number = 1) {
     const { group } = this;
-    return [group.x() / widthRatio, group.y() / heightRatio, group.rotation() % 360];
+    return [group.x() / ratio, group.y() / ratio, group.rotation() % 360];
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

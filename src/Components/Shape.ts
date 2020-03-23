@@ -135,15 +135,10 @@ export default class Shape extends EventEmitter {
     return rmBtn;
   }
 
-  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
+  getCoordinate(ratio: number = 1) {
     const { group } = this;
     const target = group.find('.target')[0];
-    return [
-      group.x() / widthRatio,
-      group.y() / heightRatio,
-      target.width() / widthRatio,
-      target.height() / heightRatio,
-    ];
+    return [group.x() / ratio, group.y() / ratio, target.width() / ratio, target.height() / ratio];
   }
 
   getTarget() {
@@ -252,7 +247,7 @@ export type ShapeType = {
   showAnchors(isShow: boolean): boolean;
   close(forceClose?: boolean): boolean;
   createRemoveButton(): typeof Konva.Path;
-  getCoordinate(widthRatio: number, heightRatio: number): Array<number>[4];
+  getCoordinate(ratio: number): Array<number>[4];
   getTarget(): typeof Konva.Group;
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }): any;
   handleMouseMove(e: any, { lastX, lastY }: { lastX: number; lastY: number }): void;

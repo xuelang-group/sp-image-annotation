@@ -84,15 +84,15 @@ export default class Line extends Shape {
     return isForceClose;
   }
 
-  getCoordinate(widthRatio: number = 1, heightRatio: number = 1) {
+  getCoordinate(ratio: number = 1) {
     const { group } = this;
     const { x, y } = group.position();
     const target = group.find('.target')[0];
     const points = [...target.points()];
 
     for (let index = 0; index < points.length; index += 2) {
-      points[index] = (points[index] + x) / widthRatio;
-      points[index + 1] = (points[index + 1] + y) / heightRatio;
+      points[index] = (points[index] + x) / ratio;
+      points[index + 1] = (points[index + 1] + y) / ratio;
     }
 
     return points;

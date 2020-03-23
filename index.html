@@ -123,6 +123,10 @@
       line.points([500, 300, 700, 500, 900, 120]);
       spImageAnnotation.add(line);
 
+      const coor = new SpImageAnnotation.Coordinate({ x: 300, y: 500 });
+      coor.setWidthHeight(200, 200);
+      spImageAnnotation.add(coor);
+
       spImageAnnotation.on('shape:select', function (target) {
         showEvent('shape:select', target)
       })
