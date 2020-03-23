@@ -132,6 +132,14 @@ export default class Line extends Shape {
     const endPointX = pts[pts.length - 2];
     const endPointY = pts[pts.length - 1];
 
+    const centralX = pts[pts.length / 2 - 1];
+    const centralY = pts[pts.length / 2];
+
+    this.$rmBtn
+      .x(centralX - 20)
+      .y(centralY - 20)
+      .show();
+
     if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
       line.closed(true);
     }
