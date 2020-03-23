@@ -107,24 +107,21 @@
         imgSrc: './demo/demo.jpg',
       })
 
-      // 获取到 layer
-      const layer = spImageAnnotation.getStage().getLayers()[0];
-
       // 添加 mask
       const mask = new SpImageAnnotation.Mask({ x: 100, y: 100 });
       mask.setWidthHeight(300, 300);
-      layer.add(mask.getTarget());
+      spImageAnnotation.add(mask);
 
       // 添加 circle
       const circle = new SpImageAnnotation.Circle({ x: 500, y: 500 });
       const radius = 100;
       circle.setWidthHeight(radius * 2, radius * 2);
-      layer.add(circle.getTarget());
+      spImageAnnotation.add(circle);
 
       // 添加多边形 line
       const line = new SpImageAnnotation.Line({});
       line.points([500, 300, 700, 500, 900, 120]);
-      layer.add(line.getTarget());
+      spImageAnnotation.add(line);
 
       spImageAnnotation.on('shape:select', function (target) {
         showEvent('shape:select', target)

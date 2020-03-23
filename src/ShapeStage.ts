@@ -79,6 +79,11 @@ export default class Annotation extends EventEmitter {
     this.initStage(options);
   }
 
+  add(shape: ShapeType) {
+    this.shapes.push(shape);
+    this.layer.add(shape.getTarget());
+  }
+
   change(factor: number) {
     const width = this.realWidth * factor;
     const height = this.realHeight * factor;
