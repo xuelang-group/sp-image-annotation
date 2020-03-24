@@ -117,6 +117,10 @@ export default class Annotation extends EventEmitter {
     return this.stage;
   }
 
+  handleImageLoaded = () => {
+    this.emit('imageloaded');
+  };
+
   handleKeydown(e: any) {
     if (e.keyCode === 17) {
       this.ctrlDown = true;
@@ -250,12 +254,18 @@ export default class Annotation extends EventEmitter {
     this.$toolbar = this.initToolbar(options, $container);
 
     this.$stage = document.createElement('div');
-    this.$img = new ImageHelper({ src: imgSrc, container: this.$stage, className: 'image' });
+    this.$img = new ImageHelper({
+      src: imgSrc,
+      container: this.$stage,
+      className: 'image',
+      onImageLoaded: this.handleImageLoaded,
+    });
     this.$img.onload(() => {
       const img = this.$img.getDOM();
       this.naturalWidth = parseFloat(img.naturalWidth);
       this.naturalHeight = parseFloat(img.naturalHeight);
       this.resize(this.$container.clientWidth, this.$container.clientHeight);
+      this.emit('imageloaded');
     });
     this.$canvas = document.createElement('div');
 

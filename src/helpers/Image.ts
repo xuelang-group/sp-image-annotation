@@ -3,6 +3,7 @@ export type ImageConfig = {
   container?: string | HTMLElement;
   containerDOM?: HTMLElement;
   className?: string;
+  onImageLoaded: Function;
 };
 
 export default class ImageHelper {
@@ -26,12 +27,13 @@ export default class ImageHelper {
 
   createDOM(options: ImageConfig) {
     const $img = document.createElement('img');
-    const { containerDOM, src = '', className = '' } = options;
+    const { containerDOM, src = '', className = '', onImageLoaded } = options;
 
     $img.setAttribute('src', '');
     $img.setAttribute('class', className);
     $img.onload = () => {
       this.resize({ container: containerDOM });
+      onImageLoaded();
     };
     $img.setAttribute('src', src);
 
