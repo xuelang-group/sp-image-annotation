@@ -41,6 +41,13 @@ export default class Circle extends Shape {
     return [group.x() / ratio, group.y() / ratio, group.width() / ratio / 2.0];
   }
 
+  load(coordinate: Array<number> = [], ratio: number) {
+    const [x, y, radius] = coordinate;
+
+    this.group.x(x * ratio).y(y * ratio);
+    this.setWidthHeight(radius * 2 * ratio, radius * 2 * ratio);
+  }
+
   setWidthHeight(width: number, height: number) {
     const size = Math.max(width, height);
     const circle = this.group.find('.target')[0];

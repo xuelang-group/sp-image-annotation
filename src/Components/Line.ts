@@ -98,6 +98,16 @@ export default class Line extends Shape {
     return points;
   }
 
+  load(points: Array<number> = [], ratio: number) {
+    const pts = [];
+    for (let index = 0; index < points.length; index += 2) {
+      pts[index] = points[index] * ratio;
+      pts[index + 1] = points[index + 1] * ratio;
+    }
+
+    this.points(pts);
+  }
+
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {
     const stage = this.group.getStage();
     const pos = stage.getPointerPosition();

@@ -28,10 +28,6 @@ export default class Annotation extends EventEmitter {
 
   shapes: Array<any> = [];
 
-  attributes: Array<any> = [];
-
-  shapeAttributes: { [key: string]: Array<string> } = {};
-
   stage: StageType;
 
   $stage: HTMLElement;
@@ -101,6 +97,10 @@ export default class Annotation extends EventEmitter {
     this.resizeShapes(factor);
 
     this.layer.batchDraw();
+  }
+
+  clear() {
+    this.stage.clear();
   }
 
   getShapeData() {
@@ -325,26 +325,18 @@ export default class Annotation extends EventEmitter {
     return $toolbar;
   }
 
-  load({ shapes = [], attributes = [] }: { shapes: any; attributes: any }) {
+  load(shapes: Array<{ type: string; coordinate: Array<number> }> = []) {
     this.shapes = [];
 
-    // 清除现有shape
-    this.stage.clear();
-    this.shapeAttributes = {};
     shapes.forEach((shape: any) => {
       // 添加shapes
-      const { id, type, coordinate, attributeIds } = shape;
-
-      // 绑定 shape 与 attribute
-      this.shapeAttributes[id] = [].concat(attributeIds);
-
-      const newShape = new this.SHAPES_SUPPORTED[type]();
-      newShape.load(coordinate);
+      const { type, coordinate } = shape;
+      const newShape = new this.SHAPES_SUPPORTED[type]({ x: 0, y: 0, width: 1, height: 1 });
+      newShape.load(coordinate, this.imageScaleRatio);
       this.shapes.push(newShape);
-      this.layer.add(this.lastShape.getTarget());
+      this.layer.add(newShape.getTarget());
+      this.layer.batchDraw();
     });
-
-    this.attributes = attributes;
   }
 
   resize(width: number, height: number) {

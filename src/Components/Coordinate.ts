@@ -57,6 +57,16 @@ export default class Coordinate extends Shape {
     return [group.x() / ratio, group.y() / ratio, group.rotation() % 360];
   }
 
+  load(coordinate: Array<number> = [], ratio: number) {
+    const [x, y, rotation] = coordinate;
+
+    this.group
+      .x(x * ratio)
+      .y(y * ratio)
+      .rotate(rotation);
+    this.setWidthHeight(100, 100);
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleMouseMove(e: any, data: { lastX: number; lastY: number }) {
     this.setWidthHeight(100, 100);

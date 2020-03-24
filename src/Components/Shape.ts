@@ -141,6 +141,12 @@ export default class Shape extends EventEmitter {
     return [group.x() / ratio, group.y() / ratio, target.width() / ratio, target.height() / ratio];
   }
 
+  load(coordinate: Array<number>, ratio: number) {
+    const [x, y, width, height] = coordinate;
+    this.group.x(x * ratio).y(y * ratio);
+    this.setWidthHeight(width * ratio, height * ratio);
+  }
+
   getTarget() {
     return this.group;
   }

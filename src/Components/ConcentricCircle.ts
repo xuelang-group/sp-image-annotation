@@ -59,6 +59,18 @@ export default class ConcentricCircle extends Shape {
     ];
   }
 
+  load(coordinate: Array<number> = [], ratio: number) {
+    const [x, y, innerRadius, outerRadius] = coordinate;
+    const innerCircle = this.group.find('.target')[0];
+    const outerCircle = this.group.find('.target')[1];
+
+    innerCircle.width(innerRadius * 2 * ratio);
+    outerCircle.width(outerRadius * 2 * ratio);
+
+    this.group.x(x * ratio).y(y * ratio);
+    this.setWidthHeight(outerRadius * 2 * ratio, outerRadius * 2 * ratio);
+  }
+
   setWidthHeight(width: number, height: number) {
     const size = Math.max(width, height);
     const innerCircle = this.group.find('.target')[0];
@@ -81,7 +93,7 @@ export default class ConcentricCircle extends Shape {
     outerCircle.width(size);
     outerCircle.height(size);
 
-    const innerWidth = Math.max(0, size - innerCircle.width() / 2.0);
+    const innerWidth = Math.max(5, innerCircle.width());
     const innerHeight = innerWidth;
 
     innerCircle.x(size / 2.0);
@@ -117,7 +129,7 @@ export default class ConcentricCircle extends Shape {
 
     const anchorY = activeAnchor.getY();
 
-    let minSize = 0;
+    let minSize = 5;
     let maxSize = 0;
     const gap = 20;
     let size = minSize;
