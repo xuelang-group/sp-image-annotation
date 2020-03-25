@@ -184,6 +184,7 @@ export default class Annotation extends EventEmitter {
         y: this.lastY,
         width: 1,
         height: 1,
+        currentRatio: this.imageScaleRatio,
       });
       this.shapes.push(this.lastShape);
       this.layer.add(this.lastShape.getTarget());
@@ -341,7 +342,13 @@ export default class Annotation extends EventEmitter {
     shapes.forEach((shape: any) => {
       // 添加shapes
       const { type, coordinate } = shape;
-      const newShape = new this.SHAPES_SUPPORTED[type]({ x: 0, y: 0, width: 1, height: 1 });
+      const newShape = new this.SHAPES_SUPPORTED[type]({
+        x: 0,
+        y: 0,
+        width: 1,
+        height: 1,
+        currentRatio: this.imageScaleRatio,
+      });
       newShape.load(coordinate, this.imageScaleRatio);
       this.shapes.push(newShape);
       this.layer.add(newShape.getTarget());

@@ -42,9 +42,10 @@ export default class Shape extends EventEmitter {
     super(options);
 
     this.options = options;
-    const { x, y } = options;
+    const { x, y, currentRatio = 1 } = options;
     const group = new Konva.Group({ id: uuidv4(), x, y, draggable: false });
     this.group = group;
+    this.currentRatio = currentRatio;
     this.$rmBtn = this.createRemoveButton();
 
     this.initEvents(group);
@@ -73,8 +74,12 @@ export default class Shape extends EventEmitter {
       anchor.moveToTop();
     });
 
-    anchor.on('dragend', () => {
+    anchor.on('dragend', (evt: any) => {
       group.draggable(true);
+
+      if (this.handleAnchorDragEnd) {
+        this.handleAnchorDragEnd(evt, anchor);
+      }
     });
 
     anchor.on('mouseover', (evt: any) => {

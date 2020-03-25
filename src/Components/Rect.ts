@@ -45,6 +45,39 @@ export default class Rect extends Shape {
     }
   }
 
+  handleAnchorDragEnd(evt: any, anchor: typeof Konva.Anchor) {
+    const { group } = this;
+    const topLeft = group.find('.topLeft')[0];
+    const topRight = group.find('.topRight')[0];
+    const bottomRight = group.find('.bottomRight')[0];
+    const bottomLeft = group.find('.bottomLeft')[0];
+    const target = group.find('.target')[0];
+
+    const eventX = evt.evt.offsetX;
+    const eventY = evt.evt.offsetY;
+
+    // update anchor positions
+    switch (anchor.getName()) {
+      case 'topLeft':
+        group.x(eventX).y(eventY);
+        break;
+      case 'topRight':
+        group.y(eventY);
+        break;
+      case 'bottomLeft':
+        group.x(eventX);
+        break;
+      default:
+        break;
+    }
+
+    target.x(0).y(0);
+    topLeft.x(0).y(0);
+    topRight.x(group.width()).y(0);
+    bottomRight.x(group.width()).y(group.height());
+    bottomLeft.x(0).y(group.height());
+  }
+
   updateAnchor(activeAnchor: typeof Konva.Anchor) {
     const { group } = this;
 
