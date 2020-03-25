@@ -38,13 +38,30 @@ export default class Circle extends Shape {
 
   getCoordinate(ratio: number = 1) {
     const { group } = this;
-    return [group.x() / ratio, group.y() / ratio, group.width() / ratio / 2.0];
+    const r = group.width() * 0.5;
+    return [(group.x() + r) / ratio, (group.y() + r) / ratio, r / ratio];
+  }
+
+  handleAnchorDragEnd(evt: any, anchor: typeof Konva.Anchor) {
+    const { group } = this;
+    const circle = this.group.find('.target')[0];
+    const r = group.width() * 0.5;
+
+    const eventX = evt.evt.offsetX;
+    const eventY = evt.evt.offsetY;
+
+    circle.x(r).y(r);
+    group.x(eventX - r).y(eventY);
+    this.$rmBtn
+      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+      .y((this.group.height() - this.$rmBtn.height()) / 2.0);
+    anchor.x(circle.x()).y(0);
   }
 
   load(coordinate: Array<number> = [], ratio: number) {
     const [x, y, radius] = coordinate;
 
-    this.group.x(x * ratio).y(y * ratio);
+    this.group.x((x - radius) * ratio).y((y - radius) * ratio);
     this.setWidthHeight(radius * 2 * ratio, radius * 2 * ratio);
   }
 
@@ -55,10 +72,8 @@ export default class Circle extends Shape {
     this.group.width(size);
     this.group.height(size);
 
-    this.group
-      .find('.target')[0]
-      .width(width)
-      .height(height);
+    circle.width(width).height(height);
+
     this.group
       .find('.top')[0]
       .x(size / 2.0)

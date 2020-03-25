@@ -76,10 +76,12 @@ export default class Shape extends EventEmitter {
 
     anchor.on('dragend', (evt: any) => {
       group.draggable(true);
+      const layer = anchor.getLayer();
 
       if (this.handleAnchorDragEnd) {
         this.handleAnchorDragEnd(evt, anchor);
       }
+      layer.draw();
     });
 
     anchor.on('mouseover', (evt: any) => {
