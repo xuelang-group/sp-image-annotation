@@ -105,7 +105,10 @@ export default class Line extends Shape {
       pts[index + 1] = points[index + 1] * ratio;
     }
 
+    console.log(points);
+    console.log(pts);
     this.points(pts);
+    this.close();
   }
 
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {
@@ -142,13 +145,24 @@ export default class Line extends Shape {
     const endPointX = pts[pts.length - 2];
     const endPointY = pts[pts.length - 1];
 
-    const centralX = pts[pts.length / 2 - 1];
-    const centralY = pts[pts.length / 2];
+    const count = pts.length;
+    let sumX = 0;
+    let sumY = 0;
+
+    for (let index = 0; index < count; index += 2) {
+      sumX += pts[index];
+      sumY += pts[index + 1];
+    }
+
+    const centralX = sumX / (count * 0.5);
+    const centralY = sumY / (count * 0.5);
 
     this.$rmBtn
-      .x(centralX - 20)
-      .y(centralY - 20)
+      .x(centralX)
+      .y(centralY)
       .show();
+
+    this.$rmBtn.moveToTop();
 
     if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
       line.closed(true);
