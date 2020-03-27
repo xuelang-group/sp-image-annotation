@@ -332,6 +332,25 @@ export default class Annotation extends EventEmitter {
       $buttons.push(shapeBtn);
     });
 
+    const $zoomInBtn = document.createElement('button');
+    $zoomInBtn.setAttribute('id', 'zoomIn');
+    $zoomInBtn.setAttribute('class', 'ant-btn ml');
+    $zoomInBtn.innerHTML = '放大';
+    $zoomInBtn.addEventListener('click', () => {
+      this.change(this.stepFactor);
+    });
+
+    const $zoomOutBtn = document.createElement('button');
+    $zoomOutBtn.setAttribute('id', 'zoomIn');
+    $zoomOutBtn.setAttribute('class', 'ant-btn ml');
+    $zoomOutBtn.innerHTML = '缩小';
+    $zoomOutBtn.addEventListener('click', () => {
+      this.change(1 / this.stepFactor);
+    });
+
+    $toolbar.appendChild($zoomInBtn);
+    $toolbar.appendChild($zoomOutBtn);
+
     $container.appendChild($toolbar);
     return $toolbar;
   }
