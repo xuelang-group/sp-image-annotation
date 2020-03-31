@@ -16,11 +16,11 @@ export default class Shape extends EventEmitter {
 
   protected static text = '形状';
 
-  protected stroke = '#666';
+  protected stroke = 'rgb(105, 255, 24)'; // 临时修改，修改前颜色#666
 
-  protected strokeWidth = 2;
+  protected strokeWidth = 3; // 临时修改，修改前2
 
-  protected anchorStroke = '#666';
+  protected anchorStroke = 'rgb(105, 255, 24)'; // 临时修改，修改前颜色#666
 
   protected anchorFill = '#ddd';
 
