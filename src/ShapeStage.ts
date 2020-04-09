@@ -11,13 +11,15 @@ import './less/annotation.less';
 
 const EventEmitter = require('events');
 
-type AnnotationOptions = {
+export interface AnnotationOptions {
   container: string;
   shapes?: string[];
   width?: number;
   height?: number;
   imgSrc?: string;
-};
+  onBeforeAddShape?: (shapeType: string, extraData: any) => boolean;
+  onShapeAdded?: (shapeType: string, extraData: any) => boolean;
+}
 
 export default class Annotation extends EventEmitter {
   SHAPES_SUPPORTED: any = {};
@@ -72,12 +74,27 @@ export default class Annotation extends EventEmitter {
 
   constructor(options: AnnotationOptions) {
     super(options);
+    this.config = options;
     this.initStage(options);
   }
 
   add(shape: ShapeType) {
     this.shapes.push(shape);
     this.layer.add(shape.getTarget());
+  }
+
+  beforeAddShape(shapeType: string, extraData: any): boolean {
+    if (this.config.onBeforeAddShape) {
+      return this.config.onBeforeAddShape(shapeType, extraData);
+    }
+    return true;
+  }
+
+  handleShapeAdded(shapeType: string, extraData: any) {
+    if (this.config.onShapeAdded) {
+      return this.config.onShapeAdded(shapeType, extraData);
+    }
+    return true;
   }
 
   change(factor: number) {
@@ -179,16 +196,19 @@ export default class Annotation extends EventEmitter {
       const { x, y } = this.stage.getPointerPosition();
       this.lastX = x;
       this.lastY = y;
-      this.lastShape = new this.SHAPES_SUPPORTED[this.shapeType]({
-        x: this.lastX,
-        y: this.lastY,
-        width: 1,
-        height: 1,
-        currentRatio: this.imageScaleRatio,
-      });
-      this.shapes.push(this.lastShape);
-      this.layer.add(this.lastShape.getTarget());
-      this.isPaint = true;
+
+      if (this.beforeAddShape(this.shapeType, { position: { x: this.lastX, y: this.lastY } })) {
+        this.lastShape = new this.SHAPES_SUPPORTED[this.shapeType]({
+          x: this.lastX,
+          y: this.lastY,
+          width: 1,
+          height: 1,
+          currentRatio: this.imageScaleRatio,
+        });
+        this.shapes.push(this.lastShape);
+        this.layer.add(this.lastShape.getTarget());
+        this.isPaint = true;
+      }
     }
   }
 
@@ -214,6 +234,8 @@ export default class Annotation extends EventEmitter {
         this.isPaint = false;
         this.stageState = STAGE_STATE.IDLE;
       }
+
+      this.handleShapeAdded(this.shapeType, { shape: this.lastShape });
     }
   }
 
@@ -361,18 +383,21 @@ export default class Annotation extends EventEmitter {
     shapes.forEach((shape: any) => {
       // 添加shapes
       const { type, coordinate } = shape;
-      const newShape = new this.SHAPES_SUPPORTED[type]({
-        x: 0,
-        y: 0,
-        width: 1,
-        height: 1,
-        currentRatio: this.imageScaleRatio,
-      });
-      newShape.load(coordinate, this.imageScaleRatio);
-      this.shapes.push(newShape);
-      this.layer.add(newShape.getTarget());
-      this.layer.batchDraw();
+      if (this.beforeAddShape(type, { coordinate })) {
+        const newShape = new this.SHAPES_SUPPORTED[type]({
+          x: 0,
+          y: 0,
+          width: 1,
+          height: 1,
+          currentRatio: this.imageScaleRatio,
+        });
+        newShape.load(coordinate, this.imageScaleRatio);
+        this.shapes.push(newShape);
+        this.layer.add(newShape.getTarget());
+        this.handleShapeAdded(type, { shape: newShape });
+      }
     });
+    this.layer.batchDraw();
   }
 
   resize(width: number, height: number) {

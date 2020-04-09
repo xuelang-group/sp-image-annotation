@@ -105,8 +105,6 @@ export default class Line extends Shape {
       pts[index + 1] = points[index + 1] * ratio;
     }
 
-    console.log(points);
-    console.log(pts);
     this.points(pts);
     this.close();
   }
