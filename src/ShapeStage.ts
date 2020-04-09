@@ -425,6 +425,7 @@ export default class Annotation extends EventEmitter {
     group.draggable(true);
 
     group.$$this.showAnchors(true);
+    group.getLayer().batchDraw();
 
     this.emit('shape:select', group.$$this);
   }

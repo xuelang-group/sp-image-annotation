@@ -16,7 +16,8 @@
     "prettier": "prettier -c --write \"**/*\"",
     "v:patch": "npm version --no-git-tag-version patch",
     "build": "npm run v:patch && webpack --env.production",
-    "dev": "webpack-dev-server --open --progress --colors"
+    "dev": "webpack-dev-server --open --progress --colors",
+    "start": "npm run dev"
   },
   "repository": {
     "type": "git",
