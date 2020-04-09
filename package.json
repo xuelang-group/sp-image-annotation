@@ -1,6 +1,6 @@
 {
   "name": "sp-image-annotation",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "A tool for image annotation",
   "main": "./dist/sp-image-annotation.min.js",
   "types": "./types/index.d.ts",
