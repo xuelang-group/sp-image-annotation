@@ -230,12 +230,11 @@ export default class Annotation extends EventEmitter {
 
   handleMouseUp() {
     if (this.stageState === STAGE_STATE.DRAWING) {
-      if (this.lastShape.close()) {
+      if (this.lastShape && this.lastShape.close()) {
         this.isPaint = false;
         this.stageState = STAGE_STATE.IDLE;
+        this.handleShapeAdded(this.shapeType, { shape: this.lastShape });
       }
-
-      this.handleShapeAdded(this.shapeType, { shape: this.lastShape });
     }
   }
 
