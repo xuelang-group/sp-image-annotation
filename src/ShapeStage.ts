@@ -1,4 +1,3 @@
-import * as Konva from 'konva';
 import Stage, { StageType } from './Stage';
 import { ShapeType } from './Components/Shape';
 import Layer, { LayerType } from './Layer';
@@ -19,6 +18,7 @@ export interface AnnotationOptions {
   imgSrc?: string;
   onBeforeAddShape?: (shapeType: string, extraData: any) => boolean;
   onShapeAdded?: (shapeType: string, extraData: any) => boolean;
+  onShapeRemoved?: (shape: ShapeType) => boolean;
 }
 
 export default class Annotation extends EventEmitter {
@@ -238,10 +238,15 @@ export default class Annotation extends EventEmitter {
     }
   }
 
-  handleRemoveShape(group: typeof Konva.Group) {
-    const index = this.shapes.findIndex((shape: ShapeType) => shape.getTarget() === group);
+  handleRemoveShape(evt: any) {
+    const { shape } = evt;
+    const index = this.shapes.findIndex((shp: ShapeType) => shp.getTarget() === shape.group);
 
     this.shapes.splice(index, 1);
+
+    if (this.config.onShapeRemoved) {
+      this.config.onShapeRemoved(shape);
+    }
   }
 
   initEvents(stage: StageType) {

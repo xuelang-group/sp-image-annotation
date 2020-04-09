@@ -116,6 +116,9 @@
             console.log('shape added:', shapeType, extra);
             return true;
           },
+          onShapeRemoved: (shape) => {
+            console.log('shape removed:', shape);
+          }
         });
 
         spImageAnnotation.on('imageloaded', function() {

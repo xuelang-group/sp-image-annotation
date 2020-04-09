@@ -129,7 +129,7 @@ export default class Shape extends EventEmitter {
       const stage = this.group.getStage();
       const layer = this.group.getLayer();
 
-      stage.fire('removeshape', this.group);
+      stage.fire('removeshape', { shape: this });
 
       this.group.destroy();
       layer.batchDraw();
