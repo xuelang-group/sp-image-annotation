@@ -52,18 +52,82 @@ export default class Coordinate extends Shape {
     this.addAnchor(group, 0, 0, 'topLeft');
   }
 
+  computeGroupPosition(x: number, y: number, rotation: number, ratio: number) {
+    const factor = Math.PI / 180;
+    let groupX = x;
+    let groupY = y;
+
+    if ((rotation > 0 && rotation <= 90) || (rotation > -360 && rotation <= -270)) {
+      groupX += 100 * Math.sin(rotation * factor);
+      groupY += 100 * Math.cos(rotation * factor);
+    }
+
+    if ((rotation > 90 && rotation <= 180) || (rotation > -270 && rotation <= -180)) {
+      groupX += 100 * Math.sin((180 - rotation) * factor);
+      groupY -= 100 * Math.cos((180 - rotation) * factor);
+    }
+
+    if ((rotation > 180 && rotation <= 270) || (rotation > -180 && rotation <= -90)) {
+      groupX -= 100 * Math.sin((rotation - 180) * factor);
+      groupY -= 100 * Math.cos((rotation - 180) * factor);
+    }
+
+    if ((rotation > 270 && rotation <= 360) || (rotation > -90 && rotation <= 0)) {
+      groupX -= 100 * Math.sin((360 - rotation) * factor);
+      groupY += 100 * Math.cos((360 - rotation) * factor);
+    }
+
+    this.group
+      .x(groupX * ratio)
+      .y(groupY * ratio)
+      .rotate(rotation);
+  }
+
+  getOriginPosition(ratio: number) {
+    const { group } = this;
+    const x = group.x();
+    const y = group.y();
+    const rotation = group.rotation() % 360;
+    const factor = Math.PI / 180;
+
+    if ((rotation > 0 && rotation <= 90) || (rotation > -360 && rotation <= -270)) {
+      return {
+        x: x / ratio - 100 * Math.sin(rotation * factor),
+        y: y / ratio - 100 * Math.cos(rotation * factor),
+      };
+    }
+
+    if ((rotation > 90 && rotation <= 180) || (rotation > -270 && rotation <= -180)) {
+      return {
+        x: x / ratio - 100 * Math.sin((180 - rotation) * factor),
+        y: y / ratio + 100 * Math.cos((180 - rotation) * factor),
+      };
+    }
+
+    if ((rotation > 180 && rotation <= 270) || (rotation > -180 && rotation <= -90)) {
+      return {
+        x: x / ratio + 100 * Math.sin((rotation - 180) * factor),
+        y: y / ratio + 100 * Math.cos((rotation - 180) * factor),
+      };
+    }
+
+    return {
+      x: x / ratio + 100 * Math.sin((360 - rotation) * factor),
+      y: y / ratio - 100 * Math.cos((360 - rotation) * factor),
+    };
+  }
+
   getCoordinate(ratio: number = 1) {
     const { group } = this;
-    return [group.x() / ratio, group.y() / ratio, group.rotation() % 360];
+    const deg = group.rotation() % 360;
+    const { x, y } = this.getOriginPosition(ratio);
+    return [x, y, deg];
   }
 
   load(coordinate: Array<number> = [], ratio: number) {
     const [x, y, rotation] = coordinate;
 
-    this.group
-      .x(x * ratio)
-      .y(y * ratio)
-      .rotate(rotation);
+    this.computeGroupPosition(x, y, rotation, ratio);
     this.setWidthHeight(100, 100);
   }
 
