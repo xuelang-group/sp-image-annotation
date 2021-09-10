@@ -48,14 +48,13 @@ export default class Point extends Shape {
   }
 
   load(point: Array<number> = [], ratio: number) {
-    const [x, y, rotation] = point;
+    const [x, y] = point;
 
     this.group
-      .x(x)
-      .y(y)
-      .rotate(rotation);
+      .x(x * ratio)
+      .y(y * ratio)
 
-    this.setWidthHeight(10, 10);
+    this.setWidthHeight(20, 20);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
