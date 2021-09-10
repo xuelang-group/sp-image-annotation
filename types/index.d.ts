@@ -27,6 +27,9 @@ declare namespace SPImageAnnotation {
 
   export const Annotation: typeof import('./Annotation').Annotation;
   export type Annotation = import('./Annotation').Annotation;
+
+  export const Point: typeof import('./Components/Point').Point;
+  export type Point = import('./Components/Point').Point;
 }
 
 export default SPImageAnnotation;

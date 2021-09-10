@@ -159,7 +159,7 @@ export default class Shape extends EventEmitter {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {}
+  handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) { }
 
   handleMouseMove(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {
     const stage = this.group.getStage();
@@ -170,7 +170,7 @@ export default class Shape extends EventEmitter {
     this.setWidthHeight(width, height);
   }
 
-  handleMouseUp() {}
+  handleMouseUp() { }
 
   initEvents(group: typeof Konva.Group) {
     group.on('mousedown', (e: any) => {

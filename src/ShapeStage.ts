@@ -9,7 +9,6 @@ import 'antd/dist/antd.css';
 import './less/annotation.less';
 
 const EventEmitter = require('events');
-
 export interface AnnotationOptions {
   container: string;
   shapes?: string[];
@@ -209,6 +208,10 @@ export default class Annotation extends EventEmitter {
         this.layer.add(this.lastShape.getTarget());
         this.isPaint = true;
       }
+      if (this.shapeType === 'POINT') {
+        this.lastShape.handleMouseDown(e, { lastX: this.lastX, lastY: this.lastY });
+        this.layer.batchDraw();
+      }
     }
   }
 
@@ -238,6 +241,10 @@ export default class Annotation extends EventEmitter {
     }
   }
 
+  handleDragEnd(e: any) {
+    this.emit('shape:drag:end', this.lastSelected);
+  }
+
   handleRemoveShape(evt: any) {
     const { shape } = evt;
     const index = this.shapes.findIndex((shp: ShapeType) => shp.getTarget() === shape.group);
@@ -257,6 +264,8 @@ export default class Annotation extends EventEmitter {
     stage.on('mousemove touchmove', this.handleMouseMove.bind(this));
 
     stage.on('removeshape', this.handleRemoveShape.bind(this));
+
+    stage.on('dragend', this.handleDragEnd.bind(this));
 
     window.addEventListener('contextmenu', e => {
       e.preventDefault();
