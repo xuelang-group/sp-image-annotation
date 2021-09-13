@@ -42,11 +42,11 @@ export default class Shape extends EventEmitter {
     super(options);
 
     this.options = options;
-    const { x, y, currentRatio = 1 } = options;
+    const { x, y, currentRatio = 1, removeBtnStyle = {} } = options;
     const group = new Konva.Group({ id: uuidv4(), x, y, draggable: false });
     this.group = group;
     this.currentRatio = currentRatio;
-    this.$rmBtn = this.createRemoveButton();
+    this.$rmBtn = this.createRemoveButton({ ...removeBtnStyle });
 
     this.initEvents(group);
   }
@@ -108,8 +108,10 @@ export default class Shape extends EventEmitter {
     return true;
   }
 
-  createRemoveButton() {
+  createRemoveButton(removeBtnStyle = {}) {
+    console.log(removeBtnStyle)
     const rmBtn = new Konva.Path({
+      name: 'removeBtn',
       x: 10,
       y: 10,
       fill: 'rgba(192, 0, 0, 0.6)',
@@ -121,6 +123,7 @@ export default class Shape extends EventEmitter {
       },
       width: 30,
       height: 30,
+      ...removeBtnStyle
     });
 
     this.$rmBtn = rmBtn;
@@ -259,7 +262,7 @@ export type ShapeType = {
   addAnchor(group: typeof Konva.Group, x: number, y: number, name: string): KonvaType.Circle;
   showAnchors(isShow: boolean): boolean;
   close(forceClose?: boolean): boolean;
-  createRemoveButton(): typeof Konva.Path;
+  createRemoveButton(style?: object): typeof Konva.Path;
   getCoordinate(ratio: number): Array<number>[4];
   getTarget(): typeof Konva.Group;
   handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }): any;

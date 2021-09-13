@@ -15,6 +15,7 @@ export interface AnnotationOptions {
   width?: number;
   height?: number;
   imgSrc?: string;
+  removeBtnStyle?: object;
   onBeforeAddShape?: (shapeType: string, extraData: any) => boolean;
   onShapeAdded?: (shapeType: string, extraData: any) => boolean;
   onShapeRemoved?: (shape: ShapeType) => boolean;
@@ -70,6 +71,10 @@ export default class Annotation extends EventEmitter {
   naturalWidth: number;
 
   naturalHeight: number;
+
+  removeBtnStyle: object = {};
+
+  prevMouseDownName: string = '';
 
   constructor(options: AnnotationOptions) {
     super(options);
@@ -170,6 +175,9 @@ export default class Annotation extends EventEmitter {
    * @param e
    */
   handleMousedown(e: any) {
+    if (this.prevMouseDownName === 'removeBtn') {
+      this.stageState = STAGE_STATE.IDLE;
+    }
     this.unselect();
     if (this.ctrlDown) {
       this.stageState = STAGE_STATE.DRAWING;
@@ -203,6 +211,7 @@ export default class Annotation extends EventEmitter {
           width: 1,
           height: 1,
           currentRatio: this.imageScaleRatio,
+          removeBtnStyle: this.removeBtnStyle
         });
         this.shapes.push(this.lastShape);
         this.layer.add(this.lastShape.getTarget());
@@ -213,6 +222,8 @@ export default class Annotation extends EventEmitter {
         this.layer.batchDraw();
       }
     }
+
+    this.prevMouseDownName = e.target.attrs.name || '';
   }
 
   handleMouseMove(e: any) {
@@ -281,9 +292,10 @@ export default class Annotation extends EventEmitter {
   }
 
   initStage(options: AnnotationOptions) {
-    const { container = '', width, height, imgSrc = '' } = options;
+    const { container = '', width, height, imgSrc = '', removeBtnStyle } = options;
     const $container = document.getElementById(container);
     this.$container = $container;
+    this.removeBtnStyle = { ...removeBtnStyle }
     const $canvasContainer = document.createElement('div');
     $canvasContainer.setAttribute('class', 'spia-canvas-container');
 
@@ -403,6 +415,7 @@ export default class Annotation extends EventEmitter {
           width: 1,
           height: 1,
           currentRatio: this.imageScaleRatio,
+          removeBtnStyle: this.removeBtnStyle
         });
         newShape.load(coordinate, this.imageScaleRatio);
         this.shapes.push(newShape);

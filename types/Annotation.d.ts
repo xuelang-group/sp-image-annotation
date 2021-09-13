@@ -8,7 +8,8 @@ export type AnnotationOptions = {
   shapes?: string[],
   width?: number,
   height?: number,
-  imgSrc?: string
+  imgSrc?: string,
+  removeBtnStyle?: object;
 }
 
 export declare class Annotation {
@@ -52,7 +53,7 @@ export declare class Annotation {
 
   getStage(): StageType
 
-  handleKeydown(e: any):void
+  handleKeydown(e: any): void
 
   handleMousedown(e: any): void
 
