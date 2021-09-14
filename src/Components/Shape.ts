@@ -173,7 +173,7 @@ export default class Shape extends EventEmitter {
     this.setWidthHeight(width, height);
   }
 
-  handleMouseUp() { }
+  handleMouseUp(e: any) { }
 
   initEvents(group: typeof Konva.Group) {
     group.on('mousedown', (e: any) => {

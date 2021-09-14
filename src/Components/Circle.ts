@@ -36,6 +36,10 @@ export default class Circle extends Shape {
     this.addAnchor(group, x, y, 'top');
   }
 
+  close() {
+    return this.group.width() !== 0 && this.group.height() !== 0;
+  }
+
   getCoordinate(ratio: number = 1) {
     const { group } = this;
     const r = group.width() * 0.5;
