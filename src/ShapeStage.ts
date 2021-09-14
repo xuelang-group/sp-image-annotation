@@ -483,6 +483,9 @@ export default class Annotation extends EventEmitter {
 
   unselect() {
     this.lastSelected = null;
+    if (this.stageState === STAGE_STATE.SELECT) {
+      this.stageState = STAGE_STATE.IDLE;
+    }
     this.shapes.forEach(shape => shape.unselect());
   }
 }
