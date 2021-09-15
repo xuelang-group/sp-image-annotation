@@ -315,6 +315,8 @@ export default class Annotation extends EventEmitter {
   initStage(options: AnnotationOptions) {
     const { container = '', width, height, imgSrc = '', removeBtnStyle } = options;
     const $container = document.getElementById(container);
+    const autoSize = !width || !height;
+
     this.$container = $container;
     this.removeBtnStyle = { ...removeBtnStyle };
     const $canvasContainer = document.createElement('div');
@@ -333,7 +335,12 @@ export default class Annotation extends EventEmitter {
       const img = this.$img.getDOM();
       this.naturalWidth = parseFloat(img.naturalWidth);
       this.naturalHeight = parseFloat(img.naturalHeight);
-      this.resize(this.$container.clientWidth, this.$container.clientHeight);
+
+      if (autoSize) {
+        this.resize(this.naturalWidth, this.naturalHeight);
+      } else {
+        this.resize(this.$container.clientWidth, this.$container.clientHeight);
+      }
       this.emit('imageloaded');
     });
     this.$canvas = document.createElement('div');
