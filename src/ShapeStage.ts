@@ -339,7 +339,7 @@ export default class Annotation extends EventEmitter {
       if (autoSize) {
         this.resize(this.naturalWidth, this.naturalHeight);
       } else {
-        this.resize(this.$container.clientWidth, this.$container.clientHeight);
+        this.resize(width, height);
       }
       this.emit('imageloaded');
     });
