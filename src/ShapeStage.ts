@@ -82,9 +82,17 @@ export default class Annotation extends EventEmitter {
     this.initStage(options);
   }
 
-  add(shape: ShapeType) {
-    this.shapes.push(shape);
-    this.layer.add(shape.getTarget());
+  add(shapes: Array<ShapeType>) {
+    if (!Array.isArray(shapes)) {
+      shapes = [shapes];
+    }
+
+    shapes.forEach(shape => {
+      this.shapes.push(shape);
+      this.layer.add(shape.getTarget());
+    });
+
+    this.layer.batchDraw();
   }
 
   beforeAddShape(shapeType: string, extraData: any): boolean {
