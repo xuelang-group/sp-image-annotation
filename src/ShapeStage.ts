@@ -211,7 +211,7 @@ export default class Annotation extends EventEmitter {
           width: 1,
           height: 1,
           currentRatio: this.imageScaleRatio,
-          removeBtnStyle: this.removeBtnStyle
+          removeBtnStyle: this.removeBtnStyle,
         });
         this.shapes.push(this.lastShape);
         this.layer.add(this.lastShape.getTarget());
@@ -295,7 +295,7 @@ export default class Annotation extends EventEmitter {
     const { container = '', width, height, imgSrc = '', removeBtnStyle } = options;
     const $container = document.getElementById(container);
     this.$container = $container;
-    this.removeBtnStyle = { ...removeBtnStyle }
+    this.removeBtnStyle = { ...removeBtnStyle };
     const $canvasContainer = document.createElement('div');
     $canvasContainer.setAttribute('class', 'spia-canvas-container');
 
@@ -404,6 +404,8 @@ export default class Annotation extends EventEmitter {
 
   load(shapes: Array<{ type: string; coordinate: Array<number> }> = []) {
     this.shapes = [];
+    this.layer.clear();
+    this.layer.destroyChildren();
 
     shapes.forEach((shape: any) => {
       // 添加shapes
@@ -415,7 +417,7 @@ export default class Annotation extends EventEmitter {
           width: 1,
           height: 1,
           currentRatio: this.imageScaleRatio,
-          removeBtnStyle: this.removeBtnStyle
+          removeBtnStyle: this.removeBtnStyle,
         });
         newShape.load(coordinate, this.imageScaleRatio);
         this.shapes.push(newShape);
