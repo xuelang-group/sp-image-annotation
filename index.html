@@ -153,6 +153,10 @@
       setInterval(function () {
         showShapeData(spImageAnnotation.getShapeData());
       }, 3000);
+      
+      setInterval(() => {
+        spImageAnnotation.setImage('./demo/demo.jpg');
+      }, 2000)
     }
   </script>
 </body>
