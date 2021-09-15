@@ -109,7 +109,6 @@ export default class Shape extends EventEmitter {
   }
 
   createRemoveButton(removeBtnStyle = {}) {
-    console.log(removeBtnStyle)
     const rmBtn = new Konva.Path({
       name: 'removeBtn',
       x: 10,

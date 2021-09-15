@@ -38,13 +38,12 @@ export default class Point extends Shape {
     group.$$this = this;
     group.add(lineX);
     group.add(lineY);
-
   }
 
   getCoordinate(ratio: number = 1) {
     const { group } = this;
     const { x, y } = group.position();
-    return [x, y];
+    return [x / ratio, y / ratio];
   }
 
   load(point: Array<number> = [], ratio: number) {
@@ -70,12 +69,6 @@ export default class Point extends Shape {
     this.group.width(width).height(height);
     this.group.find('.lineX')[0].points([0 - width / 2, 0, width / 2, 0]);
     this.group.find('.lineY')[0].points([0, height / 2, 0, 0 - height / 2]);
-
-    // this.$rmBtn
-    //   .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-    //   .y((this.group.height() - this.$rmBtn.height()) / 2.0)
-    //   .show();
-    // this.$rmBtn.moveToTop();
   }
 
   showAnchors(isShow: boolean) {
