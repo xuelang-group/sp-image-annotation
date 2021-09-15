@@ -82,16 +82,29 @@ export default class Annotation extends EventEmitter {
     this.initStage(options);
   }
 
-  add(shapes: Array<ShapeType>) {
+  add(shapes: Array<{ type: string; coordinate: Array<number> }> = []) {
     if (!Array.isArray(shapes)) {
       shapes = [shapes];
     }
 
-    shapes.forEach(shape => {
-      this.shapes.push(shape);
-      this.layer.add(shape.getTarget());
+    shapes.forEach((shape: any) => {
+      // 添加shapes
+      const { type, coordinate } = shape;
+      if (this.beforeAddShape(type, { coordinate })) {
+        const newShape = new this.SHAPES_SUPPORTED[type]({
+          x: 0,
+          y: 0,
+          width: 1,
+          height: 1,
+          currentRatio: this.imageScaleRatio,
+          removeBtnStyle: this.removeBtnStyle,
+        });
+        newShape.load(coordinate, this.imageScaleRatio);
+        this.shapes.push(newShape);
+        this.layer.add(newShape.getTarget());
+        this.handleShapeAdded(type, { shape: newShape });
+      }
     });
-
     this.layer.batchDraw();
   }
 
