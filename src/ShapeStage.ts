@@ -24,11 +24,13 @@ export interface AnnotationOptions {
 export default class Annotation extends EventEmitter {
   SHAPES_SUPPORTED: any = {};
 
+  config: AnnotationOptions;
+
   $container: HTMLElement;
 
   shapeType: string = '';
 
-  shapes: Array<any> = [];
+  shapes: any[] = [];
 
   stage: StageType;
 
@@ -68,6 +70,8 @@ export default class Annotation extends EventEmitter {
 
   heightRatio: number;
 
+  imageScaleRatio: number;
+
   naturalWidth: number;
 
   naturalHeight: number;
@@ -82,9 +86,10 @@ export default class Annotation extends EventEmitter {
     this.initStage(options);
   }
 
-  add(shapes: Array<{ type: string; coordinate: Array<number> }> = []) {
-    if (!Array.isArray(shapes)) {
-      shapes = [shapes];
+  add(_shapes: { type: string; coordinate: number[] }[] = []) {
+    let shapes = _shapes;
+    if (!Array.isArray(_shapes)) {
+      shapes = [_shapes];
     }
 
     shapes.forEach((shape: any) => {
@@ -273,7 +278,7 @@ export default class Annotation extends EventEmitter {
     }
   }
 
-  handleDragEnd(e: any) {
+  handleDragEnd() {
     this.emit('shape:drag:end', this.lastSelected);
   }
 
@@ -370,7 +375,7 @@ export default class Annotation extends EventEmitter {
   initToolbar(options: AnnotationOptions, $container: HTMLElement) {
     const $toolbar = document.createElement('div');
     const $pencil = document.createElement('div');
-    const $buttons: Array<HTMLButtonElement> = [];
+    const $buttons: HTMLButtonElement[] = [];
 
     $toolbar.setAttribute('class', 'spia-toolbar');
     $pencil.setAttribute('id', 'pencil');
@@ -430,7 +435,7 @@ export default class Annotation extends EventEmitter {
     return $toolbar;
   }
 
-  load(shapes: Array<{ type: string; coordinate: Array<number> }> = []) {
+  load(shapes: { type: string; coordinate: number[] }[] = []) {
     this.shapes = [];
     this.layer.clear();
     this.layer.destroyChildren();

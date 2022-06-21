@@ -22,6 +22,8 @@
 - 初始化画图工具
 
 ```javascript
+import { Annotation } from "sp-image-annotation";
+
 const annotation = new Annotation({
   container: 'camera-image',
   width: imageSize.width,
