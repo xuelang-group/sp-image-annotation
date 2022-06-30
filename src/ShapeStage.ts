@@ -8,6 +8,8 @@ import ImageHelper from './helpers/Image';
 import 'antd/dist/antd.css';
 import './less/annotation.less';
 
+const uuidv4 = require('uuid/v4');
+
 const EventEmitter = require('events');
 export interface AnnotationOptions {
   container: string;
@@ -318,6 +320,7 @@ export default class Annotation extends EventEmitter {
   }
 
   initStage(options: AnnotationOptions) {
+    const uuid = uuidv4();
     const { container = '', width, height, imgSrc = '', removeBtnStyle } = options;
     const $container = document.getElementById(container);
     const autoSize = !width || !height;
@@ -352,7 +355,7 @@ export default class Annotation extends EventEmitter {
 
     this.$stage.setAttribute('class', 'spia-canvas');
 
-    this.$canvas.setAttribute('id', 'cutimage');
+    this.$canvas.setAttribute('id', `cutimage-${uuid}`);
     this.$canvas.setAttribute('class', 'canvas');
 
     this.$stage.appendChild(this.$img.getDOM());
@@ -361,7 +364,7 @@ export default class Annotation extends EventEmitter {
     this.$container.appendChild($canvasContainer);
 
     this.stage = new Stage({
-      container: 'cutimage',
+      container: `cutimage-${uuid}`,
       width: width || $container.clientWidth,
       height: height || $container.clientHeight,
     });
