@@ -46,7 +46,10 @@ export default class Shape extends EventEmitter {
     const group = new Konva.Group({ id: uuidv4(), x, y, draggable: false });
     this.group = group;
     this.currentRatio = currentRatio;
-    this.$rmBtn = this.createRemoveButton({ ...removeBtnStyle });
+
+    if (options.removable) {
+      this.$rmBtn = this.createRemoveButton({ ...removeBtnStyle });
+    }
 
     this.initEvents(group);
   }

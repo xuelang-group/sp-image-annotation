@@ -442,7 +442,7 @@ export default class Annotation extends EventEmitter {
 
     shapes.forEach((shape: any) => {
       // 添加shapes
-      const { type, coordinate } = shape;
+      const { type, coordinate, removable = true } = shape;
       if (this.beforeAddShape(type, { coordinate })) {
         const newShape = new this.SHAPES_SUPPORTED[type]({
           x: 0,
@@ -451,6 +451,7 @@ export default class Annotation extends EventEmitter {
           height: 1,
           currentRatio: this.imageScaleRatio,
           removeBtnStyle: this.removeBtnStyle,
+          removable
         });
         newShape.load(coordinate, this.imageScaleRatio);
         this.shapes.push(newShape);
