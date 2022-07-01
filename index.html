@@ -124,7 +124,7 @@
 
       spImageAnnotation.on('imageloaded', function () {
         spImageAnnotation.load([
-          { type: 'RECTANGLE', coordinate: [100, 10, 100, 100] },
+          { type: 'RECTANGLE', coordinate: [100, 10, 100, 100], removable: false },
           { type: 'POINT', coordinate: [100, 10] },
           { type: 'MASK', coordinate: [100, 120, 100, 100] },
           { type: 'CIRCLE', coordinate: [200, 200, 100] },
