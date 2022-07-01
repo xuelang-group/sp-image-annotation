@@ -101,11 +101,13 @@ export default class ConcentricCircle extends Shape {
     innerCircle.width(innerWidth);
     innerCircle.height(innerHeight);
 
-    this.$rmBtn
-      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
-      .show();
-    this.$rmBtn.moveToTop();
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+        .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+        .show();
+      this.$rmBtn.moveToTop();
+    }
   }
 
   showAnchors(isShow: boolean) {

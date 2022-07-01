@@ -121,7 +121,10 @@ export default class Rect extends Shape {
       target.height(height);
       group.width(width);
       group.height(height);
-      this.$rmBtn.x((width - this.$rmBtn.width()) / 2.0).y((height - this.$rmBtn.height()) / 2.0);
+
+      if (this.$rmBtn) {
+        this.$rmBtn.x((width - this.$rmBtn.width()) / 2.0).y((height - this.$rmBtn.height()) / 2.0);
+      }
     }
   }
 

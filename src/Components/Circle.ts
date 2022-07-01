@@ -56,9 +56,13 @@ export default class Circle extends Shape {
 
     circle.x(r).y(r);
     group.x(eventX - r).y(eventY);
-    this.$rmBtn
-      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-      .y((this.group.height() - this.$rmBtn.height()) / 2.0);
+
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+        .y((this.group.height() - this.$rmBtn.height()) / 2.0);
+    }
+
     anchor.x(circle.x()).y(0);
   }
 
@@ -88,11 +92,13 @@ export default class Circle extends Shape {
     circle.width(size);
     circle.height(size);
 
-    this.$rmBtn
-      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
-      .show();
-    this.$rmBtn.moveToTop();
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+        .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+        .show();
+      this.$rmBtn.moveToTop();
+    }
   }
 
   showAnchors(isShow: boolean) {

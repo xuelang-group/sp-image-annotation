@@ -109,11 +109,13 @@ export default class Coordinate extends Shape {
       .x(0)
       .y(0);
 
-    this.$rmBtn
-      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
-      .show();
-    this.$rmBtn.moveToTop();
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+        .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+        .show();
+      this.$rmBtn.moveToTop();
+    }
   }
 
   showAnchors(isShow: boolean) {

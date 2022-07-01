@@ -32,7 +32,7 @@ export default class Shape extends EventEmitter {
 
   protected group: typeof Konva.Group = {};
 
-  protected $rmBtn: typeof Konva.Path = {};
+  protected $rmBtn: typeof Konva.Path = null;
 
   protected options: Object = {};
 
@@ -46,8 +46,9 @@ export default class Shape extends EventEmitter {
     const group = new Konva.Group({ id: uuidv4(), x, y, draggable: false });
     this.group = group;
     this.currentRatio = currentRatio;
+    this.removable = options.removable;
 
-    if (options.removable) {
+    if (this.removable) {
       this.$rmBtn = this.createRemoveButton({ ...removeBtnStyle });
     }
 
@@ -125,7 +126,7 @@ export default class Shape extends EventEmitter {
       },
       width: 30,
       height: 30,
-      ...removeBtnStyle
+      ...removeBtnStyle,
     });
 
     this.$rmBtn = rmBtn;
@@ -164,7 +165,7 @@ export default class Shape extends EventEmitter {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) { }
+  handleMouseDown(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {}
 
   handleMouseMove(e: any, { lastX, lastY }: { lastX: number; lastY: number }) {
     const stage = this.group.getStage();
@@ -175,7 +176,7 @@ export default class Shape extends EventEmitter {
     this.setWidthHeight(width, height);
   }
 
-  handleMouseUp(e: any) { }
+  handleMouseUp(e: any) {}
 
   initEvents(group: typeof Konva.Group) {
     group.on('mousedown', (e: any) => {
@@ -212,11 +213,13 @@ export default class Shape extends EventEmitter {
       .x(0)
       .y(height);
 
-    this.$rmBtn
-      .x((this.group.width() - this.$rmBtn.width()) / 2.0)
-      .y((this.group.height() - this.$rmBtn.height()) / 2.0)
-      .show();
-    this.$rmBtn.moveToTop();
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x((this.group.width() - this.$rmBtn.width()) / 2.0)
+        .y((this.group.height() - this.$rmBtn.height()) / 2.0)
+        .show();
+      this.$rmBtn.moveToTop();
+    }
   }
 
   select() {

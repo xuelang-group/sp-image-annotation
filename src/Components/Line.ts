@@ -78,7 +78,10 @@ export default class Line extends Shape {
       this.anchors.push(this.addAnchor(this.group, x, y, `${index}`));
     }
 
-    this.$rmBtn.moveToTop();
+    if (this.$rmBtn) {
+      this.$rmBtn.moveToTop();
+    }
+
     this.group.moveToTop();
 
     return isForceClose;
@@ -155,12 +158,14 @@ export default class Line extends Shape {
     const centralX = sumX / (count * 0.5);
     const centralY = sumY / (count * 0.5);
 
-    this.$rmBtn
-      .x(centralX)
-      .y(centralY)
-      .show();
+    if (this.$rmBtn) {
+      this.$rmBtn
+        .x(centralX)
+        .y(centralY)
+        .show();
 
-    this.$rmBtn.moveToTop();
+      this.$rmBtn.moveToTop();
+    }
 
     if (Math.abs(startPointX - endPointX) <= 3 && Math.abs(endPointY - startPointY) <= 3) {
       line.closed(true);
